@@ -43,7 +43,7 @@ In:
 - The seven kinds below, each its own button, macro and bar.
 - Per-kind layout: Horizontal (default) or Vertical.
 - Own options window with each kind's icon (drag or click it to pick up the button), name and
-  layout dropdown. A hand-made minimap button opens it.
+  a layout button that flips Horizontal/Vertical. A hand-made minimap button opens it.
 - Potions, elixirs, bandages and scrolls open and are usable in combat.
 - Stack counts and cooldown sweeps on item entries.
 
@@ -101,7 +101,7 @@ D:\GoblinFlyout\
     Macro.lua          find / create / pick up a kind's macro
     Bar.lua            the bar engine, plain and secure styles
     Window.lua         the options window
-    Minimap.lua        the minimap button
+    MinimapButton.lua  the minimap button (not Minimap.lua: Minimap is Blizzard's global frame)
     Core.lua           glue: events, /gf
   docs\  test\  CLAUDE.md  README.md  .luacheckrc  .luarc.json  .gitignore
 ```
@@ -214,16 +214,16 @@ SharedUIPanelTemplates.xml`, which camelot loads through `[Family]`), title "Gob
 - the kind's icon as a button: `OnDragStart` and `OnClick` call `Macro.PickUp(kind)`; its
   tooltip says "Drag to an action bar";
 - the label;
-- a Horizontal/Vertical dropdown bound to `GoblinFlyoutDB.layouts[key]`; a change closes that
-  kind's bar if open (out of combat).
+- a `UIPanelButtonTemplate` button reading "Horizontal" or "Vertical" that flips
+  `GoblinFlyoutDB.layouts[key]` on click; a change closes that kind's bar if open (out of combat).
 Pickup refuses in combat (CreateMacro may be needed); the window says why in chat.
 
-### Minimap.lua
+### MinimapButton.lua
 
 `GoblinFlyoutMinimapButton`, parented to `Minimap`, stock minimap-button art
 (`MiniMap-TrackingBorder` ring, icon `INV_Misc_Bomb_04`, confirmed by the checklist). Left-click toggles the window;
 drag moves it round the rim and saves `minimap.angle`. Tooltip: "Goblin Flyout" / "Click for
-options, drag to move". Pure: `Minimap.Position(angle, radius)` → x, y offset from the centre.
+options, drag to move". Pure: `MinimapButton.Position(angle, radius)` → x, y offset from the centre, and `MinimapButton.Angle(dx, dy)` → degrees 0..360.
 
 ### Core.lua
 
@@ -255,7 +255,7 @@ Slash `/gf` and `/goblinflyout`:
 - Unit tests through Python `lupa` (`test/run.lua`, the ProfessionFlyout harness): `Kinds`
   (seven rows, unique keys and toggle names, every filter), `Items` (filters, Food/Drink/neither,
   stack merge, sort and ties, junk input), `Professions` (carried over), `Macro.IsOurs`,
-  `Bar.Positions/PickHost/ENTRY_*`, `Options.Init/Other`, `Minimap.Position`.
+  `Bar.Positions/PickHost/ENTRY_*`, snippet text the restricted environment accepts, `Options.Init/Other`, `MinimapButton.Position/Angle`.
 - `docs/manual-test-checklist.md`: an in-game entry for every UI path: each kind opens and uses
   an entry; potions/elixirs/bandages/scrolls open and use in combat; count drops and greys at 0;
   cooldown sweep; Escape in and out of combat; click outside; page change; per-kind layout; the
