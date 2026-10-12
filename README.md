@@ -1,0 +1,41 @@
+# Goblin Flyout
+
+A World of Warcraft addon for **WoW Forever** (interface 16001). Seven buttons for your stock
+Blizzard action bars, each opening a small bar built from Blizzard's own action button:
+
+| Button | Opens | In combat |
+|---|---|---|
+| Professions | your crafting professions | no |
+| Food | the food in your bags | no |
+| Drink | the drinks in your bags | no |
+| Potions | your potions | yes |
+| Elixirs | your elixirs and flasks | yes |
+| Bandages | your bandages | yes |
+| Scrolls | your scrolls | yes |
+
+Items are listed best first (highest item level), one entry per item with its count. In combat
+a bar shows what you had when the fight began; used-up items grey out until it ends.
+
+## Install
+
+Copy the `GoblinFlyout` folder into `World of Warcraft\_classic_beta_\Interface\AddOns\` and
+restart the game.
+
+## Use
+
+Click the bomb on the minimap (or type `/gf`) and drag a kind's icon onto an action bar. Each
+kind has its own Horizontal/Vertical button in that window.
+
+| Command | Does |
+|---|---|
+| `/gf` | Opens the Goblin Flyout window |
+| `/gf <kind>` | Puts that kind's button on your cursor (`/gf potions`) |
+| `/gf layout <kind>` | Flips that kind between Horizontal and Vertical |
+| `/gf probe` | Prints what the addon detects, for bug reports |
+
+Stock Blizzard bars only; Bartender, Dominos and other bar addons are not supported.
+
+## Development
+
+See `CLAUDE.md` for the rules, test and lint commands, and `docs/` for the design spec, plan and
+in-game test checklist.
