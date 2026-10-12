@@ -1,0 +1,31 @@
+return function(h, loaded)
+    local Look = loaded.ns.Look
+
+    h.describe("Look.RGB", function()
+        h.it("gives a palette colour as three 0..1 numbers", function()
+            local r, g, b = Look.RGB("gold")
+            h.eq(string.format("%.3f %.3f %.3f", r, g, b), "0.839 0.667 0.306")
+        end)
+        h.it("an unknown name falls back to dim, never an error", function()
+            local r = Look.RGB("chartreuse")
+            h.eq(r, Look.COLOUR.dim[1])
+        end)
+    end)
+
+    h.describe("Look.File", function()
+        local path = "Interface\\AddOns\\GoblinFlyout\\Media\\icons\\close-"
+        h.it("picks the smallest copy at least as big as the pixels drawn", function()
+            h.eq(Look.File("close", 20), path .. "32")
+            h.eq(Look.File("close", 32), path .. "32")
+            h.eq(Look.File("close", 33), path .. "64")
+            h.eq(Look.File("close", 100), path .. "128")
+        end)
+        h.it("bigger than every copy gets the largest", function()
+            h.eq(Look.File("close", 300), path .. "128")
+        end)
+        h.it("no screen size from the client gets the middle copy", function()
+            h.eq(Look.File("close", nil), path .. "64")
+            h.eq(Look.File("close", 0 / 0), path .. "64")
+        end)
+    end)
+end

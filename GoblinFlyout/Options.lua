@@ -13,8 +13,8 @@ Options.LABELS = { horizontal = "Horizontal", vertical = "Vertical" }
 Options.DEFAULT_LAYOUT = "horizontal"
 Options.DEFAULT_ANGLE = 225  -- degrees round the minimap: bottom-left
 
--- The SavedVariable with every field valid:
--- { layouts = { <kind key> = layout }, minimap = { angle }, window = { point, x, y } | nil }.
+-- The SavedVariable with every field valid: { layouts = { <kind key> = layout },
+-- minimap = { angle }, window = { point, relativePoint, x, y } | nil }.
 -- Keeps the given table, so writes to it are saved.
 function Options.Init(db)
     if type(db) ~= "table" then
@@ -31,7 +31,7 @@ function Options.Init(db)
         db.minimap = { angle = Options.DEFAULT_ANGLE }
     end
     local window = db.window
-    if not (type(window) == "table" and type(window.point) == "string"
+    if not (type(window) == "table" and type(window.point) == "string" and type(window.relativePoint) == "string"
         and type(window.x) == "number" and type(window.y) == "number") then
         db.window = nil
     end
@@ -54,16 +54,13 @@ function Options.Register(openWindow)
         return false
     end
     local panel = CreateFrame("Frame")
-    local open = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-    open:SetSize(200, 26)
-    open:SetPoint("TOPLEFT", panel, "TOPLEFT", 16, -16)
-    open:SetText("Open " .. Options.NAME)
-    open:SetScript("OnClick", function()
+    local open = ns.Look.Button(panel, "Open " .. Options.NAME, 200, 28, function()
         if SettingsPanel and HideUIPanel then
             HideUIPanel(SettingsPanel)
         end
         openWindow()
-    end)
+    end, "gold")
+    open:SetPoint("TOPLEFT", panel, "TOPLEFT", 16, -16)
     category = Settings.RegisterCanvasLayoutCategory(panel, Options.NAME)
     Settings.RegisterAddOnCategory(category)
     return true

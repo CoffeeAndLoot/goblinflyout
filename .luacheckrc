@@ -12,5 +12,5 @@ read_globals = {
     "Settings", "SettingsPanel", "HideUIPanel",
     "C_Container", "C_Item", "C_Spell",
     "SecureHandlerExecute", "SecureHandlerWrapScript",
-    "Minimap", "GetCursorPosition", "ButtonFrameTemplate_HidePortrait",
+    "Minimap", "GetCursorPosition", "GetPhysicalScreenSize",
 }

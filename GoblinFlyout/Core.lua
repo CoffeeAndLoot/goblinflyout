@@ -56,9 +56,9 @@ function Core.Window()
     return db().window
 end
 
-function Core.SaveWindow(point, x, y)
-    if type(point) == "string" and type(x) == "number" and type(y) == "number" then
-        db().window = { point = point, x = x, y = y }
+function Core.SaveWindow(point, relativePoint, x, y)
+    if type(point) == "string" and type(relativePoint) == "string" and type(x) == "number" and type(y) == "number" then
+        db().window = { point = point, relativePoint = relativePoint, x = x, y = y }
     end
 end
 

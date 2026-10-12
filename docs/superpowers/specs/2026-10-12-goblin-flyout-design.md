@@ -43,7 +43,8 @@ In:
 - The seven kinds below, each its own button, macro and bar.
 - Per-kind layout: Horizontal (default) or Vertical.
 - Own options window with each kind's icon (drag or click it to pick up the button), name and
-  a layout button that flips Horizontal/Vertical. A hand-made minimap button opens it.
+  a Horizontal | Vertical switch. A hand-made minimap button opens it. Both wear the Goblin look
+  (amended 2026-10-12, see Look.lua below).
 - Potions, elixirs, bandages and scrolls open and are usable in combat.
 - Stack counts and cooldown sweeps on item entries.
 
@@ -97,6 +98,7 @@ D:\GoblinFlyout\
     Kinds.lua          pure: the seven kinds as data, in window order
     Professions.lua    pure: copied from ProfessionFlyout, unchanged in behaviour
     Items.lua          pure: raw bag items -> one kind's sorted entries
+    Look.lua           the Goblin look: palette, fonts, flat pieces (from GoblinQuest)
     Options.lua        SavedVariable shape; stub Settings page
     Macro.lua          find / create / pick up a kind's macro
     Bar.lua            the bar engine, plain and secure styles
@@ -200,30 +202,50 @@ Messages: "Can't open professions in combat.", "Put the Potions button on an act
 
 ### Options.lua
 
-`GoblinFlyoutDB = { layouts = { <key> = "horizontal" | "vertical" }, minimap = { angle = 225 }, window = { point, x, y } }`.
+`GoblinFlyoutDB = { layouts = { <key> = "horizontal" | "vertical" }, minimap = { angle = 225 }, window = { point, relativePoint, x, y } }`.
 `Options.Init(db)` fills and repairs every field in place (unknown keys/values reset; default
 layout Horizontal for every kind). `Options.Other(layout)`. `Options.Register(openWindow)` adds
 Esc > Options > AddOns > Goblin Flyout with one button, "Open Goblin Flyout"; false when the
 client's Settings UI lacks a piece.
 
+### Look.lua (amended 2026-10-12: the GoblinQuest design)
+
+GoblinQuest's `Look.lua`, trimmed to what this addon draws: its clean-look palette (window,
+inset, raised, divider, line, dim, text, gold, ink), the game's two fonts (`FRIZQT__`, `ARIALN`),
+1-pixel outlines, flat buttons (raised / quiet / gold) and an outlined glyph button. Plain frames
+and colour textures, **no Blizzard frame templates**, so a template renamed by a beta patch
+cannot break the window. Pure: `Look.RGB(name)` and `Look.File(name, pixels)`, which picks the
+smallest of the 32/64/128 px copies at least as big as the glyph is drawn (sharp 1080p to 4K;
+64 when the client gives no screen size). Glyphs: `Media\icons\close-*.tga`, copied from
+GoblinQuest. The flyout bars are not restyled: they stay Blizzard action buttons so they match
+the bar they open from.
+
 ### Window.lua
 
-`GoblinFlyoutWindow`: a movable `ButtonFrameTemplate` window (`Blizzard_SharedXML\Mainline\
-SharedUIPanelTemplates.xml`, which camelot loads through `[Family]`), title "Goblin Flyout", added to
-`UISpecialFrames`, position saved in `GoblinFlyoutDB.window`. Seven rows in `Kinds.LIST` order:
+`GoblinFlyoutWindow`: GoblinQuest's window chrome. A `window` fill, a `line` outline, a 2 px gold
+top edge, and a header (drag handle) with "Goblin Flyout" in gold Friz 17, the tagline "Time is
+money, friend." in dim Friz 10, and a close glyph button. Below it an inset well of seven rows
+in `Kinds.LIST` order:
 - the kind's icon as a button: `OnDragStart` and `OnClick` call `Macro.PickUp(kind)`; its
   tooltip says "Drag to an action bar";
 - the label;
-- a `UIPanelButtonTemplate` button reading "Horizontal" or "Vertical" that flips
-  `GoblinFlyoutDB.layouts[key]` on click; a change closes that kind's bar if open (out of combat).
-Pickup refuses in combat (CreateMacro may be needed); the window says why in chat.
+- a Horizontal | Vertical switch (two flat buttons, the current one gold) bound to
+  `GoblinFlyoutDB.layouts[key]`; a change closes that kind's bar if open (out of combat).
+A dim footer reads "Drag an icon onto an action bar to place its button." Added to
+`UISpecialFrames`. On drag stop it re-anchors TOPLEFT to UIParent's BOTTOMLEFT where it sits and
+saves `{ point, relativePoint, x, y }` in `GoblinFlyoutDB.window`. Pickup refuses in combat
+(CreateMacro may be needed); the window says why in chat. The Settings page's "Open Goblin
+Flyout" is a gold `Look.Button`.
 
 ### MinimapButton.lua
 
-`GoblinFlyoutMinimapButton`, parented to `Minimap`, stock minimap-button art
-(`MiniMap-TrackingBorder` ring, icon `INV_Misc_Bomb_04`, confirmed by the checklist). Left-click toggles the window;
-drag moves it round the rim and saves `minimap.angle`. Tooltip: "Goblin Flyout" / "Click for
-options, drag to move". Pure: `MinimapButton.Position(angle, radius)` → x, y offset from the centre, and `MinimapButton.Angle(dx, dy)` → degrees 0..360.
+`GoblinFlyoutMinimapButton`, parented to `Minimap`, wearing `Media\icon.tga` (also the TOC's
+`IconTexture`): GoblinQuest's icon recipe (`tools/make_icon.py`, Cinzel, SIL OFL) with "GF" on an
+oxblood disc, picked by the owner 2026-10-12. The icon has its own gold rim, so no border art.
+Left-click toggles the window; drag moves it round the rim and saves `minimap.angle`. Tooltip:
+"Goblin Flyout" / "Click for options, drag to move." / "Time is money, friend." (gold). Pure:
+`MinimapButton.Position(angle, radius)` → x, y offset from the centre, and
+`MinimapButton.Angle(dx, dy)` → degrees 0..360.
 
 ### Core.lua
 

@@ -6,7 +6,7 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 ## Install
 
 - [ ] After the junction and a **full client restart**, Goblin Flyout is listed and enabled in
-      the AddOns list; no Lua error on login.
+      the AddOns list with its round GF icon; no Lua error on login.
 - [ ] `/gf probe`: one line per profession ending `-> <spell> <id>` as ProfessionFlyout showed;
       food and drink spell names; every bag consumable with its subclass, spell and kinds
       (Minor Healing Potion -> potions, Tough Jerky -> food, Ice Cold Milk -> drink, Elixir of
@@ -15,23 +15,33 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 
 ## Window and minimap
 
-- [ ] A minimap button with a bomb icon sits on the rim; hovering says "Goblin Flyout / Click for
-      options, drag to move."
+- [ ] A round minimap button sits on the rim: gold "GF" on an oxblood disc with a gold rim, no
+      extra border ring, sharp (not blurry). Hovering says "Goblin Flyout / Click for options, drag
+      to move. / Time is money, friend." (the last line gold).
 - [ ] Dragging it slides it round the rim; `/reload`: it stays where it was put.
 - [ ] Clicking it opens the window; clicking again, or Escape, closes it.
 - [ ] `/gf` and `/gf options` open the window too.
-- [ ] Esc > Options > AddOns lists "Goblin Flyout" with an "Open Goblin Flyout" button that closes
-      the options and opens the window.
-- [ ] The window shows seven rows: Professions, Food, Drink, Potions, Elixirs, Bandages, Scrolls,
-      each with its icon (book, food, drink, potion, elixir, bandage, scroll; no red question mark),
-      name and a "Horizontal" button. Names don't run into the buttons.
-- [ ] The window can be dragged; `/reload`: it reopens where it was left.
+- [ ] Esc > Options > AddOns lists "Goblin Flyout" with a gold flat "Open Goblin Flyout" button
+      that closes the options and opens the window.
+- [ ] The window looks like GoblinQuest's Main Menu: dark, a thin gold edge along the top, a 1 px
+      border; "Goblin Flyout" in gold with "Time is money, friend." under it; a square close button
+      with an X glyph (not the letter X) at the right of the header; no Blizzard window art.
+- [ ] Below, an inset list of seven rows: Professions, Food, Drink, Potions, Elixirs, Bandages,
+      Scrolls, each with its icon (book, food, drink, potion, elixir, bandage, scroll; no red
+      question mark) in a thin outline, its name, and a Horizontal | Vertical switch with
+      Horizontal gold. Thin rules between rows; names don't run into the switch. A dim hint at
+      the bottom: "Drag an icon onto an action bar to place its button."
+- [ ] Hovering an icon tints it gold and shows "<Kind> / Drag to an action bar."
+- [ ] The close button closes it.
+- [ ] The window drags by its header (not by the list); `/reload`: it reopens exactly where it
+      was left, not clamped to an edge.
 - [ ] Dragging an icon onto an action slot places that kind's button; Esc > Macros > General shows
       the macro with the same icon, named after the kind.
 - [ ] Clicking an icon puts the button on the cursor; clicking a slot places it.
 - [ ] Doing either again makes no second macro.
-- [ ] Clicking a layout button flips it to "Vertical" and back; `/reload` keeps the choice.
-- [ ] `/gf layout potions` flips Potions and says so; an open window's button agrees.
+- [ ] Clicking Vertical lights Vertical gold and Horizontal quiet, and the next open is a column;
+      clicking Horizontal turns it back. `/reload` keeps the choice.
+- [ ] `/gf layout potions` flips Potions and says so; an open window's switch agrees.
 - [ ] In combat: dragging or clicking an icon says "Can't do that in combat."
 - [ ] `/gf potions` puts the Potions button on the cursor and says to click a slot.
 

@@ -278,6 +278,21 @@ function API.SnippetsWork()
     return frame:GetAttribute("goblinflyout") == 1
 end
 
+-- ---- screen ----
+
+-- Physical pixels per UI unit at scale 1 (the UI is 768 units tall), so a
+-- glyph picks a copy that is sharp from 1080p to 4K; nil when unknown.
+function API.ScreenPixelsPerUnit()
+    if not GetPhysicalScreenSize then
+        return nil
+    end
+    local _, height = attempt("GetPhysicalScreenSize", GetPhysicalScreenSize)
+    if type(height) ~= "number" or height <= 0 then
+        return nil
+    end
+    return height / 768
+end
+
 -- ---- events ----
 
 local eventFrame

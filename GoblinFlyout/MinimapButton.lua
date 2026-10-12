@@ -8,7 +8,7 @@ local _, ns = ...
 local MinimapButton = {}
 ns.MinimapButton = MinimapButton
 
-MinimapButton.ICON = "Interface\\Icons\\INV_Misc_Bomb_04"
+MinimapButton.ICON = "Interface\\AddOns\\GoblinFlyout\\Media\\icon"  -- tools/make_icon.py: GF on oxblood
 
 -- Offset from the minimap's centre for an angle in degrees (0 = right, 90 = up).
 function MinimapButton.Position(angle, radius)
@@ -48,15 +48,10 @@ function MinimapButton.Create(core)
     button:RegisterForClicks("LeftButtonUp")
     button:RegisterForDrag("LeftButton")
     button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
+    -- The icon is round with its own gold rim, as GoblinQuest's is: no border art.
     local icon = button:CreateTexture(nil, "ARTWORK")
-    icon:SetSize(20, 20)
-    icon:SetPoint("TOPLEFT", button, "TOPLEFT", 6, -6)
+    icon:SetAllPoints(button)
     icon:SetTexture(MinimapButton.ICON)
-    icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
-    local border = button:CreateTexture(nil, "OVERLAY")
-    border:SetSize(53, 53)
-    border:SetPoint("TOPLEFT", button, "TOPLEFT")
-    border:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
     button:SetScript("OnClick", function()
         core.ToggleWindow()
     end)
@@ -71,6 +66,7 @@ function MinimapButton.Create(core)
         GameTooltip:SetOwner(self, "ANCHOR_LEFT")
         GameTooltip:SetText(ns.Options.NAME)
         GameTooltip:AddLine("Click for options, drag to move.", 1, 1, 1)
+        GameTooltip:AddLine("Time is money, friend.", 1, 0.69, 0)
         GameTooltip:Show()
     end)
     button:SetScript("OnLeave", function()
