@@ -1,6 +1,6 @@
 # Goblin Flyout
 
-A World of Warcraft addon for **WoW Forever** (interface 16001). Seven buttons for your stock
+A World of Warcraft addon for **WoW Forever** (interface 16001). Eight buttons for your stock
 Blizzard action bars, each opening a small bar built from Blizzard's own action button:
 
 | Button | Opens | In combat |
@@ -8,6 +8,7 @@ Blizzard action bars, each opening a small bar built from Blizzard's own action 
 | Professions | your crafting professions | no |
 | Food | the food in your bags | no |
 | Drink | the drinks in your bags | no |
+| Food & Drink | your food, then your drinks, on one bar | no |
 | Potions | your potions | yes |
 | Elixirs | your elixirs and flasks | yes |
 | Bandages | your bandages | yes |

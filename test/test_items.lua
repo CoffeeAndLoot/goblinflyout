@@ -65,6 +65,16 @@ return function(h, loaded)
             h.eq(ids(entries), "118,7")
             h.eq(entries[2].count, 1)
         end)
+        h.it("Food & Drink: food first, then drink, each best first; a both-item once, with the food", function()
+            local entries = Items.Entries({
+                raw(1179, "Ice Cold Milk", 15, 5, 2, 5, "Drink"),
+                raw(117, "Tough Jerky", 5, 1, 4, 5, "Food"),
+                raw(4604, "Forest Mushroom Cap", 15, 5, 1, 5, "Food"),
+                raw(9000, "Bread and Water", 10, 5, 1, 5, "Refreshment"),
+                raw(252031, "Crisp Spring Water", 5, 1, 3, 5, "Drink"),
+            }, Kinds.ByKey("fooddrink"), names)
+            h.eq(ids(entries), "4604,9000,117,1179,252031")
+        end)
         h.it("works without spell names", function()
             h.eq(#Items.Entries({ raw(117, "Tough Jerky", 5, 1, 1, 5, "Food") }, food, nil), 1)
         end)

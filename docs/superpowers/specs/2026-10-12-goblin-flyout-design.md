@@ -7,14 +7,14 @@ Base: `D:\ProfessionFlyout` (left as it is; Goblin Flyout is a new addon that gr
 
 ## Goal
 
-Seven buttons on stock Blizzard action bars, each opening a small bar ("flyout") of things to
+Eight buttons on stock Blizzard action bars, each opening a small bar ("flyout") of things to
 use: the player's crafting professions, and the food, drink, potions, elixirs, bandages and
 scrolls in their bags. Consumables are listed best first. Potions, elixirs, bandages and scrolls
 open and work in combat. It looks and feels like stock Blizzard UI.
 
 ## Nomenclature
 
-- **Kind**: one of the seven flyouts (professions, food, drink, potions, elixirs, bandages, scrolls).
+- **Kind**: one of the eight flyouts (professions, food, drink, food & drink, potions, elixirs, bandages, scrolls).
 - **Button**: a kind's macro, placed by the player in a stock Blizzard action slot.
 - **Bar**: our flyout of entries that opens next to the button.
 - **Entry**: one profession or one item on a bar.
@@ -40,7 +40,7 @@ open and work in combat. It looks and feels like stock Blizzard UI.
 ## Scope
 
 In:
-- The seven kinds below, each its own button, macro and bar.
+- The eight kinds below, each its own button, macro and bar.
 - Per-kind layout: Horizontal (default) or Vertical.
 - Own options window with each kind's icon (drag or click it to pick up the button), name and
   a Horizontal | Vertical switch. A hand-made minimap button opens it. Both wear the Goblin look
@@ -61,6 +61,7 @@ Out (YAGNI):
 | professions | Professions | professions | — (Professions.lua rules) | no |
 | food | Food | bags | subclass 5 and spell is Food or neither | no |
 | drink | Drink | bags | subclass 5 and spell is Drink or neither | no |
+| fooddrink | Food & Drink | bags | anything food or drink takes; food (and neither) first, then drink | no |
 | potions | Potions | bags | subclass 1 | yes |
 | elixirs | Elixirs | bags | subclass 2 or 3 | yes |
 | bandages | Bandages | bags | subclass 7 | yes |
@@ -70,11 +71,18 @@ Out (YAGNI):
 no spell): it shows on both bars. Food and Drink are compared with the client's own names for
 spells 433 and 430 (`C_Spell.GetSpellName`), so this works in any locale.
 
-Toggle frame `GoblinFlyout<Key>` (`GoblinFlyoutPotions`), macro body `/click GoblinFlyout<Key>`.
+Food & Drink (amended 2026-10-12, the owner's ask) is Food and Drink on one bar: food and
+"neither" items first, then drink, each half best first; an item that is both shows once. Its
+empty message is "No food or drink in your bags." There is no link setting: like every kind it
+costs nothing until its button is placed. The window joins its row to Food and Drink with a gold
+bracket (the row's `joins`).
+
+Toggle frame `GoblinFlyout<Label>` with only letters and digits kept (`GoblinFlyoutPotions`,
+`GoblinFlyoutFoodDrink`), macro body `/click` plus that name.
 Macro icons: Professions `INV_Misc_Book_09`, Food `INV_Misc_Food_15`, Drink `INV_Drink_07`,
-Potions `INV_Potion_51`, Elixirs `INV_Potion_45`, Bandages `INV_Misc_Bandage_15`,
-Scrolls `INV_Scroll_03`. Each is confirmed by the manual checklist; one that does not draw is
-swapped for another stock icon.
+Food & Drink `INV_Misc_Fork&Knife`, Potions `INV_Potion_51`, Elixirs `INV_Potion_45`, Bandages
+`INV_Misc_Bandage_15`, Scrolls `INV_Scroll_03`. Each is confirmed by the manual checklist; one
+that does not draw is swapped for another stock icon.
 
 ## Decisions
 
@@ -95,7 +103,7 @@ D:\GoblinFlyout\
   GoblinFlyout\
     GoblinFlyout.toc   ## Interface: 16001, SavedVariables: GoblinFlyoutDB
     API.lua            the only Blizzard caller; every call through attempt(); owns the event frame
-    Kinds.lua          pure: the seven kinds as data, in window order
+    Kinds.lua          pure: the eight kinds as data, in window order
     Professions.lua    pure: copied from ProfessionFlyout, unchanged in behaviour
     Items.lua          pure: raw bag items -> one kind's sorted entries
     Look.lua           the Goblin look: palette, fonts, flat pieces (from GoblinQuest)
@@ -117,7 +125,7 @@ junction into `D:\World of Warcraft\_classic_beta_\Interface\AddOns\GoblinFlyout
 
 ### Kinds.lua (pure)
 
-`Kinds.LIST`: the seven rows in the order above, each
+`Kinds.LIST`: the eight rows in the order above, each
 `{ key, label, macroName, icon, source = "professions" | "bags", secure = bool, accepts = function(item, names) }`.
 `Kinds.ByKey(key)` returns a row or nil. `accepts` gets a raw item and the localized
 `{ food, drink }` spell names; Professions has no `accepts`.
@@ -224,7 +232,7 @@ the bar they open from.
 
 `GoblinFlyoutWindow`: GoblinQuest's window chrome. A `window` fill, a `line` outline, a 2 px gold
 top edge, and a header (drag handle) with "Goblin Flyout" in gold Friz 17, the tagline "Time is
-money, friend." in dim Friz 10, and a close glyph button. Below it an inset well of seven rows
+money, friend." in dim Friz 10, and a close glyph button. Below it an inset well of eight rows
 in `Kinds.LIST` order:
 - the kind's icon as a button: `OnDragStart` and `OnClick` call `Macro.PickUp(kind)`; its
   tooltip says "Drag to an action bar";
@@ -275,7 +283,7 @@ Slash `/gf` and `/goblinflyout`:
 ## Testing
 
 - Unit tests through Python `lupa` (`test/run.lua`, the ProfessionFlyout harness): `Kinds`
-  (seven rows, unique keys and toggle names, every filter), `Items` (filters, Food/Drink/neither,
+  (eight rows, unique keys and toggle names, every filter), `Items` (filters, Food/Drink/neither,
   stack merge, sort and ties, junk input), `Professions` (carried over), `Macro.IsOurs`,
   `Bar.Positions/PickHost/ENTRY_*`, snippet text the restricted environment accepts, `Options.Init/Other`, `MinimapButton.Position/Angle`.
 - `docs/manual-test-checklist.md`: an in-game entry for every UI path: each kind opens and uses

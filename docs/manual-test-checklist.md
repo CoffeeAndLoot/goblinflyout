@@ -23,14 +23,18 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] `/gf` and `/gf options` open the window too.
 - [ ] Esc > Options > AddOns lists "Goblin Flyout" with a gold flat "Open Goblin Flyout" button
       that closes the options and opens the window.
-- [ ] The window looks like GoblinQuest's Main Menu: dark, a thin gold edge along the top, a 1 px
+- [x] The window looks like GoblinQuest's Main Menu: dark, a thin gold edge along the top, a 1 px
       border; "Goblin Flyout" in gold with "Time is money, friend." under it; a square close button
       with an X glyph (not the letter X) at the right of the header; no Blizzard window art.
-- [ ] Below, an inset list of seven rows: Professions, Food, Drink, Potions, Elixirs, Bandages,
-      Scrolls, each with its icon (book, food, drink, potion, elixir, bandage, scroll; no red
-      question mark) in a thin outline, its name, and a Horizontal | Vertical switch with
-      Horizontal gold. Thin rules between rows; names don't run into the switch. A dim hint at
-      the bottom: "Drag an icon onto an action bar to place its button."
+      (Owner's screenshot 2026-10-12, the seven-row build: all seven stock icons drew.)
+- [ ] Below, an inset list of eight rows: Professions, Food, Drink, Food & Drink, Potions,
+      Elixirs, Bandages, Scrolls, each with its icon (book, food, drink, fork and knife, potion,
+      elixir, bandage, scroll; no red question mark) in a thin outline, its name, and a
+      Horizontal | Vertical switch with Horizontal gold. Thin rules between rows; names, "Food &
+      Drink" too, don't run into the switch. A dim hint at the bottom: "Drag an icon onto an
+      action bar to place its button."
+- [ ] A thin gold bracket in the left gutter joins the Food, Drink and Food & Drink rows: one line
+      down from Food's middle to Food & Drink's, with a short tick into each of the three icons.
 - [ ] Hovering an icon tints it gold and shows "<Kind> / Drag to an action bar."
 - [ ] The close button closes it.
 - [ ] The window drags by its header (not by the list); `/reload`: it reopens exactly where it
@@ -45,12 +49,21 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] In combat: dragging or clicking an icon says "Can't do that in combat."
 - [ ] `/gf potions` puts the Potions button on the cursor and says to click a slot.
 
-## Plain bars (Professions, Food, Drink)
+## Plain bars (Professions, Food, Drink, Food & Drink)
 
 - [ ] Professions opens exactly as ProfessionFlyout's did (same entries, tooltips, windows).
 - [ ] Food opens a row of the food in the bags, best item level first; each entry shows its
       stack count and the item's own tooltip; clicking one eats it and closes the bar.
 - [ ] Drink likewise for drinks.
+- [ ] Dragging Food & Drink's icon to a slot makes a "Food & Drink" macro with the fork-and-knife
+      icon. Its bar shows every food first (best item level first), then every drink (best
+      first); with Tough Jerky, Forest Mushroom Cap, Ice Cold Milk and Crisp Spring Water in the
+      bags: Forest Mushroom Cap, Tough Jerky, Ice Cold Milk, Crisp Spring Water. An item that is
+      both food and drink shows once, among the food.
+- [ ] With Food, Drink and Food & Drink all placed, each opens its own bar; opening one closes
+      the others. Its layout switch works on its own.
+- [ ] No food or drink in the bags: "No food or drink in your bags." In combat: "Can't open food &
+      drink in combat."
 - [ ] With a stack split across two bags, one entry shows the total.
 - [ ] Opening Food while Drink is open closes Drink.
 - [ ] Escape, a click elsewhere, and paging the main bar each close it.

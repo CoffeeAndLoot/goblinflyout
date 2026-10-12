@@ -13,9 +13,13 @@ local function number(value)
     return type(value) == "number" and value or 0
 end
 
--- Best first: higher item level, then higher required level, then name A to Z.
--- The item ID last, so the order never depends on which bag a stack sits in.
+-- Best first: the kind's lower group first (Food & Drink: food, then drink),
+-- then higher item level, higher required level, and name A to Z. The item ID
+-- last, so the order never depends on which bag a stack sits in.
 function Items.Better(a, b)
+    if a.group ~= b.group then
+        return a.group < b.group
+    end
     if a.itemLevel ~= b.itemLevel then
         return a.itemLevel > b.itemLevel
     end
@@ -47,7 +51,8 @@ function Items.Entries(raws, kind, names)
                 entry.count = entry.count + count
             else
                 entry = { itemID = raw.itemID, name = raw.name, icon = raw.icon, count = count,
-                    itemLevel = number(raw.itemLevel), minLevel = number(raw.minLevel) }
+                    itemLevel = number(raw.itemLevel), minLevel = number(raw.minLevel),
+                    group = kind.group and number(kind.group(raw, names)) or 0 }
                 byID[raw.itemID] = entry
                 entries[#entries + 1] = entry
             end

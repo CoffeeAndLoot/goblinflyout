@@ -6,6 +6,7 @@ return function(h, loaded)
         h.it("a kind's body clicks its toggle", function()
             h.eq(Macro.Body(potions), "/click GoblinFlyoutPotions")
             h.eq(Macro.Body(professions), "/click GoblinFlyoutProfessions")
+            h.eq(Macro.Body(Kinds.ByKey("fooddrink")), "/click GoblinFlyoutFoodDrink")
         end)
     end)
 

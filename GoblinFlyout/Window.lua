@@ -9,11 +9,12 @@ local Window = {}
 ns.Window = Window
 
 Window.NAME = "GoblinFlyoutWindow"  -- UISpecialFrames closes frames by name on Escape
-Window.WIDTH = 360
+Window.WIDTH = 400  -- room for "Food & Drink" between its icon and its switch
 Window.HOME = { "CENTER", "CENTER", 0, 40 }  -- where it opens until dragged
 Window.LAYOUT = {
     TOP_EDGE = 2, HEADER = 56, PAD = 16, CLOSE = 28,
-    ROW = 44, ICON = 32, WELL_PAD = 4, SWITCH_W = 82, SWITCH_H = 24, FOOT = 30,
+    ROW = 44, ICON = 32, ICON_X = 24, WELL_PAD = 4, SWITCH_W = 82, SWITCH_H = 24, FOOT = 30,
+    BRACE_X = 12, BRACE = 2,  -- the gold bracket in the gutter left of the icons
 }
 local L = Window.LAYOUT
 Window.HEIGHT = L.TOP_EDGE + L.HEADER + L.PAD + #ns.Kinds.LIST * L.ROW + 2 * L.WELL_PAD + L.FOOT
@@ -66,7 +67,7 @@ local function row(core, well, kind, i)
 
     local icon = CreateFrame("Button", nil, r)
     icon:SetSize(L.ICON, L.ICON)
-    icon:SetPoint("LEFT", r, "LEFT", 10, 0)
+    icon:SetPoint("LEFT", r, "LEFT", L.ICON_X, 0)
     local art = icon:CreateTexture(nil, "ARTWORK")
     art:SetPoint("TOPLEFT", icon, "TOPLEFT", 1, -1)
     art:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", -1, 1)
@@ -104,8 +105,37 @@ local function row(core, well, kind, i)
     if i > 1 then
         local rule = Look.Texture(r, "BORDER", Look.COLOUR.divider)
         rule:SetHeight(1)
-        rule:SetPoint("TOPLEFT", r, "TOPLEFT", 10, 0)
+        rule:SetPoint("TOPLEFT", r, "TOPLEFT", L.ICON_X, 0)  -- clear of the bracket's gutter
         rule:SetPoint("TOPRIGHT", r, "TOPRIGHT", -10, 0)
+    end
+end
+
+-- A gold bracket down the gutter joining a kind's row to the rows it combines
+-- (Food & Drink to Food and Drink): a spine from the first row's middle to the
+-- last's, and a tick into each row's icon. Plain colour textures, sharp at any size.
+local function bracket(well, kind, at)
+    local Look = ns.Look
+    local rows = { at }
+    for _, key in ipairs(kind.joins) do
+        for i, other in ipairs(ns.Kinds.LIST) do
+            if other.key == key then
+                rows[#rows + 1] = i
+            end
+        end
+    end
+    local function middle(i)
+        return -(L.WELL_PAD + (i - 1) * L.ROW + L.ROW / 2)
+    end
+    local top, bottom = math.min(unpack(rows)), math.max(unpack(rows))
+    local spine = Look.Texture(well, "ARTWORK", Look.COLOUR.gold)
+    spine:SetWidth(L.BRACE)
+    spine:SetPoint("TOPLEFT", well, "TOPLEFT", L.BRACE_X, middle(top) + L.BRACE / 2)
+    spine:SetPoint("BOTTOMLEFT", well, "TOPLEFT", L.BRACE_X, middle(bottom) - L.BRACE / 2)
+    for _, i in ipairs(rows) do
+        local tick = Look.Texture(well, "ARTWORK", Look.COLOUR.gold)
+        tick:SetHeight(L.BRACE)
+        tick:SetPoint("LEFT", well, "TOPLEFT", L.BRACE_X, middle(i))
+        tick:SetWidth(L.WELL_PAD + L.ICON_X - L.BRACE_X - 3)  -- stops just short of the icon
     end
 end
 
@@ -133,6 +163,9 @@ local function make(core)
     Look.Outline(well, Look.COLOUR.line)
     for i, kind in ipairs(ns.Kinds.LIST) do
         row(core, well, kind, i)
+        if kind.joins then
+            bracket(well, kind, i)
+        end
     end
 
     local hint = Look.Text(frame, Look.WORDS, 10, "dim")

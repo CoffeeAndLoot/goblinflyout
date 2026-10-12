@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Goblin Flyout
 
 WoW Forever addon (interface 16001: Classic data on the 12.x engine, game type `camelot`).
-Seven macros on stock Blizzard action bars open bars of the player's professions, food, drink,
+Eight macros on stock Blizzard action bars open bars of the player's professions, food, drink, food and drink together,
 potions, elixirs, bandages and scrolls. Spec: `docs/superpowers/specs/2026-10-12-goblin-flyout-design.md`
 (its Nomenclature section names kind, button, bar, entry, host, toggle, plain/secure, window).
 Grown from `D:\ProfessionFlyout`, which stays as it is.
@@ -37,8 +37,9 @@ Grown from `D:\ProfessionFlyout`, which stays as it is.
 
 TOC load order is `API, Kinds, Professions, Items, Look, Options, Macro, Bar, Window, MinimapButton, Core`.
 
-1. `Kinds.LIST` is the seven kinds as data: key, label, icon, source (`professions` / `bags`),
-   `secure` (opens in combat), `accepts(item, names)` filter, plus derived `toggle` and `empty`.
+1. `Kinds.LIST` is the eight kinds as data: key, label, icon, source (`professions` / `bags`),
+   `secure` (opens in combat), `accepts(item, names)` filter, optional `group` (sort halves) and
+   `joins` (the window's gold bracket), plus derived `toggle` (label, letters and digits only) and `empty`.
 2. `/gf <kind>` or dragging a kind's icon in the window → `Macro.PickUp(kind)` finds the macro
    **by body** (`/click GoblinFlyout<Label>`), creates it if missing, and puts it on the cursor.
 3. Pressing the macro `/click`s the kind's toggle:
