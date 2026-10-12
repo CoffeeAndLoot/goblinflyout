@@ -8,6 +8,7 @@ local modules = {
     { "Kinds", "GoblinFlyout/Kinds.lua" },
     { "Professions", "GoblinFlyout/Professions.lua" },
     { "Items", "GoblinFlyout/Items.lua" },
+    { "Options", "GoblinFlyout/Options.lua" },
 }
 
 local ns = {}
@@ -21,6 +22,7 @@ local suites = {
     "test/test_professions.lua",
     "test/test_kinds.lua",
     "test/test_items.lua",
+    "test/test_options.lua",
 }
 
 for i = 1, #suites do
