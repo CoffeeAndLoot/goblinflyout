@@ -13,7 +13,7 @@ Window.WIDTH = 400  -- room for "Food & Drink" between its icon and its switch
 Window.HOME = { "CENTER", "CENTER", 0, 40 }  -- where it opens until dragged
 Window.LAYOUT = {
     TOP_EDGE = 2, HEADER = 56, PAD = 16, CLOSE = 28,
-    ROW = 44, ICON = 32, ICON_X = 24, WELL_PAD = 4, SWITCH_W = 82, SWITCH_H = 24, FOOT = 30,
+    ROW = 44, ICON = 32, ICON_X = 24, WELL_PAD = 4, SWITCH_W = 82, SWITCH_H = 24, FOOT = 62, CHECK = 18,
     BRACE_X = 12, BRACE = 2,  -- the gold bracket in the gutter left of the icons
 }
 local L = Window.LAYOUT
@@ -21,6 +21,7 @@ Window.HEIGHT = L.TOP_EDGE + L.HEADER + L.PAD + #ns.Kinds.LIST * L.ROW + 2 * L.W
 
 local frame
 local switches = {}  -- kind key -> { horizontal = button, vertical = button }
+local minimapCheck
 
 local function buildHeader(core)
     local Look = ns.Look
@@ -168,6 +169,16 @@ local function make(core)
         end
     end
 
+    -- Hiding the minimap button leaves /gf and Esc > Options to open this window.
+    minimapCheck = Look.Check(frame, L.CHECK, function()
+        core.SetMinimapShown(not core.MinimapShown())
+    end)
+    minimapCheck:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", L.PAD, 34)
+    local checkLabel = Look.Text(frame, Look.WORDS, 12, "text")
+    checkLabel:SetPoint("LEFT", minimapCheck, "RIGHT", 10, 0)
+    checkLabel:SetPoint("RIGHT", frame, "RIGHT", -L.PAD, 0)
+    checkLabel:SetText("Show minimap button")
+
     local hint = Look.Text(frame, Look.WORDS, 10, "dim")
     hint:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", L.PAD, 11)
     hint:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -L.PAD, 11)
@@ -184,8 +195,11 @@ local function make(core)
     table.insert(UISpecialFrames, Window.NAME)  -- Escape closes it
 end
 
--- Lights each kind's current layout gold on its switch.
+-- Lights each kind's current layout gold on its switch, and the minimap check.
 function Window.Refresh(core)
+    if minimapCheck then
+        minimapCheck.SetOn(core.MinimapShown())
+    end
     for key, switch in pairs(switches) do
         local layout = core.Layout(key)
         ns.Look.Style(switch.horizontal, layout == "horizontal" and "gold" or "quiet")

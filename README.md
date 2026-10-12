@@ -32,6 +32,7 @@ kind has its own Horizontal/Vertical button in that window.
 | `/gf` | Opens the Goblin Flyout window |
 | `/gf <kind>` | Puts that kind's button on your cursor (`/gf potions`) |
 | `/gf layout <kind>` | Flips that kind between Horizontal and Vertical |
+| `/gf minimap` | Hides or shows the minimap button (also a check box in the window) |
 | `/gf probe` | Prints what the addon detects, for bug reports |
 
 Stock Blizzard bars only; Bartender, Dominos and other bar addons are not supported.

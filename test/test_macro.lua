@@ -30,4 +30,67 @@ return function(h, loaded)
             h.falsy(Macro.IsOurs(nil, "/click GoblinFlyoutPotions"))
         end)
     end)
+
+    -- A fake macro book behind ns.API, so Ensure and Tidy run without the client.
+    local function book(macros)
+        local api = {}
+        function api.FindMacro(test)
+            for i, m in ipairs(macros) do
+                if test(m.body) then
+                    return i
+                end
+            end
+        end
+        function api.AccountMacrosFull() return false end
+        function api.CreateMacro(name, icon, body)
+            macros[#macros + 1] = { name = name, icon = icon, body = body }
+            return #macros
+        end
+        function api.MacroName(index) return macros[index] and macros[index].name end
+        function api.RenameMacro(index, name) macros[index].name = name end
+        return api
+    end
+
+    local function with(api, fn)
+        local saved = loaded.ns.API
+        loaded.ns.API = api
+        local ok, err = pcall(fn)
+        loaded.ns.API = saved
+        assert(ok, err)
+    end
+
+    h.describe("Macro.Ensure", function()
+        h.it("a new macro gets the kind's short name, so its label fits under the button", function()
+            local macros = {}
+            with(book(macros), function()
+                h.eq(Macro.Ensure(Kinds.ByKey("fooddrink")), 1)
+            end)
+            h.eq(macros[1].name, "Meals")
+            h.eq(macros[1].body, "/click GoblinFlyoutFoodDrink")
+        end)
+    end)
+
+    h.describe("Macro.Tidy", function()
+        h.it("an older macro named after the label is renamed to the short name, body untouched", function()
+            local macros = { { name = "My Macro", body = "/cast Cooking" },
+                { name = "Food & Drink", body = "/click GoblinFlyoutFoodDrink" } }
+            with(book(macros), function()
+                Macro.Tidy(Kinds.ByKey("fooddrink"))
+            end)
+            h.eq(macros[2].name, "Meals")
+            h.eq(macros[2].body, "/click GoblinFlyoutFoodDrink")
+            h.eq(macros[1].name, "My Macro", "a player's macro is never touched")
+        end)
+        h.it("a macro already short, or none made, is left alone", function()
+            local renamed = false
+            local macros = { { name = "Potion", body = "/click GoblinFlyoutPotions" } }
+            local api = book(macros)
+            api.RenameMacro = function() renamed = true end
+            with(api, function()
+                Macro.Tidy(potions)
+                Macro.Tidy(Kinds.ByKey("scrolls"))
+            end)
+            h.falsy(renamed)
+        end)
+    end)
 end

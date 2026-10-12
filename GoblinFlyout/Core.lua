@@ -52,6 +52,16 @@ function Core.SetAngle(angle)
     end
 end
 
+function Core.MinimapShown()
+    return not db().minimap.hide
+end
+
+function Core.SetMinimapShown(shown)
+    db().minimap.hide = not shown
+    MinimapButton.SetShown(shown)
+    Window.Refresh(Core)
+end
+
 function Core.Window()
     return db().window
 end
@@ -84,7 +94,7 @@ local snippets  -- whether secure snippets ran at setup; nil until then
 
 -- /gf <word> [rest] -> handler(rest)
 local commands = {}
-local HELP = "Commands: /gf, /gf <kind>, /gf layout <kind>, /gf probe. Kinds: "
+local HELP = "Commands: /gf, /gf <kind>, /gf layout <kind>, /gf minimap, /gf probe. Kinds: "
     .. table.concat(Kinds.KEYS, ", ") .. "."
 
 commands[""] = function()
@@ -100,6 +110,15 @@ function commands.layout(rest)
     end
     Core.SetLayout(kind.key, Options.Other(Core.Layout(kind.key)))
     say(kind.label .. " layout: " .. Options.LABELS[Core.Layout(kind.key)] .. ".")
+end
+
+function commands.minimap()
+    Core.SetMinimapShown(not Core.MinimapShown())
+    if Core.MinimapShown() then
+        say("Minimap button shown.")
+    else
+        say("Minimap button hidden; /gf opens the window.")
+    end
 end
 
 -- What detection sees, to settle in-game unknowns.
@@ -165,6 +184,7 @@ end
 local function setup()
     snippets = API.SnippetsWork()
     for _, kind in ipairs(Kinds.LIST) do
+        Macro.Tidy(kind)  -- the short name, for a macro the first builds named after the label
         if kind.secure and snippets then
             Bar.MakeSecureToggle(kind, function()
                 guard("Open", function()

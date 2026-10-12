@@ -40,7 +40,10 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] The window drags by its header (not by the list); `/reload`: it reopens exactly where it
       was left, not clamped to an edge.
 - [ ] Dragging an icon onto an action slot places that kind's button; Esc > Macros > General shows
-      the macro with the same icon, named after the kind.
+      the macro with the same icon and its short name: Prof, Food, Drink, Meals, Potion, Elixir,
+      Aid or Scroll. Each label fits under its button, uncut.
+- [ ] Macros made by the first build (named "Professions", "Food & Drink" ...) are renamed to the
+      short names at login; the buttons already placed keep working and show the short label.
 - [ ] Clicking an icon puts the button on the cursor; clicking a slot places it.
 - [ ] Doing either again makes no second macro.
 - [ ] Clicking Vertical lights Vertical gold and Horizontal quiet, and the next open is a column;
@@ -48,6 +51,11 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] `/gf layout potions` flips Potions and says so; an open window's switch agrees.
 - [ ] In combat: dragging or clicking an icon says "Can't do that in combat."
 - [ ] `/gf potions` puts the Potions button on the cursor and says to click a slot.
+- [ ] The window's footer has a "Show minimap button" check box, gold inside while shown.
+      Clicking it hides the minimap button and empties the box; again brings it back. `/reload`
+      keeps the choice. `/gf minimap` does the same and says so; an open window's box agrees.
+- [ ] With the minimap button hidden, `/gf` and Esc > Options > AddOns > Goblin Flyout still open
+      the window.
 
 ## Plain bars (Professions, Food, Drink, Food & Drink)
 
@@ -55,7 +63,7 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] Food opens a row of the food in the bags, best item level first; each entry shows its
       stack count and the item's own tooltip; clicking one eats it and closes the bar.
 - [ ] Drink likewise for drinks.
-- [ ] Dragging Food & Drink's icon to a slot makes a "Food & Drink" macro with the fork-and-knife
+- [ ] Dragging Food & Drink's icon to a slot makes a "Meals" macro with the fork-and-knife
       icon. Its bar shows every food first (best item level first), then every drink (best
       first); with Tough Jerky, Forest Mushroom Cap, Ice Cold Milk and Crisp Spring Water in the
       bags: Forest Mushroom Cap, Tough Jerky, Ice Cold Milk, Crisp Spring Water. An item that is

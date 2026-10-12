@@ -40,27 +40,29 @@ local function drinkLast(item, names)
     return (spell ~= nil and spell == names.drink) and 2 or 1
 end
 
+-- label: the window and chat. macro: the macro's name, which the action bar
+-- shows under the button and cuts off past about 6 characters.
 Kinds.LIST = {
-    { key = "professions", label = "Professions", icon = "INV_Misc_Book_09", source = "professions",
-      secure = false },
-    { key = "food", label = "Food", icon = "INV_Misc_Food_15", source = "bags", secure = false,
+    { key = "professions", label = "Professions", macro = "Prof", icon = "INV_Misc_Book_09",
+      source = "professions", secure = false },
+    { key = "food", label = "Food", macro = "Food", icon = "INV_Misc_Food_15", source = "bags", secure = false,
       accepts = function(item, names) return eats(item, names.food, names.drink) end },
-    { key = "drink", label = "Drink", icon = "INV_Drink_07", source = "bags", secure = false,
+    { key = "drink", label = "Drink", macro = "Drink", icon = "INV_Drink_07", source = "bags", secure = false,
       accepts = function(item, names) return eats(item, names.drink, names.food) end },
     -- Food and Drink on one bar: food first, then drink (group), each half best first.
-    { key = "fooddrink", label = "Food & Drink", icon = "INV_Misc_Fork&Knife", source = "bags", secure = false,
-      empty = "No food or drink in your bags.",
+    { key = "fooddrink", label = "Food & Drink", macro = "Meals", icon = "INV_Misc_Fork&Knife",
+      source = "bags", secure = false, empty = "No food or drink in your bags.",
       accepts = function(item, names)
           return eats(item, names.food, names.drink) or eats(item, names.drink, names.food)
       end,
       group = drinkLast, joins = { "food", "drink" } },
-    { key = "potions", label = "Potions", icon = "INV_Potion_51", source = "bags", secure = true,
+    { key = "potions", label = "Potions", macro = "Potion", icon = "INV_Potion_51", source = "bags", secure = true,
       accepts = function(item) return consumable(item, Kinds.POTION) end },
-    { key = "elixirs", label = "Elixirs", icon = "INV_Potion_45", source = "bags", secure = true,
+    { key = "elixirs", label = "Elixirs", macro = "Elixir", icon = "INV_Potion_45", source = "bags", secure = true,
       accepts = function(item) return consumable(item, Kinds.ELIXIR, Kinds.FLASK) end },
-    { key = "bandages", label = "Bandages", icon = "INV_Misc_Bandage_15", source = "bags", secure = true,
-      accepts = function(item) return consumable(item, Kinds.BANDAGE) end },
-    { key = "scrolls", label = "Scrolls", icon = "INV_Scroll_03", source = "bags", secure = true,
+    { key = "bandages", label = "Bandages", macro = "Aid", icon = "INV_Misc_Bandage_15", source = "bags",
+      secure = true, accepts = function(item) return consumable(item, Kinds.BANDAGE) end },
+    { key = "scrolls", label = "Scrolls", macro = "Scroll", icon = "INV_Scroll_03", source = "bags", secure = true,
       accepts = function(item) return consumable(item, Kinds.SCROLL) end },
 }
 

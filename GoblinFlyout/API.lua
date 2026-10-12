@@ -196,6 +196,23 @@ function API.PickupMacro(index)
     end
 end
 
+-- The name of the account macro at index, or nil.
+function API.MacroName(index)
+    if not GetMacroInfo then
+        return nil
+    end
+    local name = attempt("GetMacroInfo", GetMacroInfo, index)
+    return type(name) == "string" and name or nil
+end
+
+-- Renames a macro. A nil icon and body keep theirs, as Blizzard's macro UI
+-- relies on (Blizzard_MacroUI.lua EditMacro(actualIndex, nil, nil, body)).
+function API.RenameMacro(index, name)
+    if EditMacro then
+        attempt("EditMacro", EditMacro, index, name, nil, nil)
+    end
+end
+
 -- ---- bags and items ----
 
 -- The backpack and the four bags: Enum.BagIndex.Backpack (0) to Bag_4 (4).

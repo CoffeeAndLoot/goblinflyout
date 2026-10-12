@@ -56,16 +56,18 @@ Out (YAGNI):
 
 ## Kinds
 
-| key | Macro name | Source | Filter (classID 0) | In combat |
+| key | Label (macro name) | Source | Filter (classID 0) | In combat |
 |---|---|---|---|---|
-| professions | Professions | professions | — (Professions.lua rules) | no |
-| food | Food | bags | subclass 5 and spell is Food or neither | no |
-| drink | Drink | bags | subclass 5 and spell is Drink or neither | no |
-| fooddrink | Food & Drink | bags | anything food or drink takes; food (and neither) first, then drink | no |
-| potions | Potions | bags | subclass 1 | yes |
-| elixirs | Elixirs | bags | subclass 2 or 3 | yes |
-| bandages | Bandages | bags | subclass 7 | yes |
-| scrolls | Scrolls | bags | subclass 4 | yes |
+| professions | Professions (Prof) | professions | — (Professions.lua rules) | no |
+| food | Food (Food) | bags | subclass 5 and spell is Food or neither | no |
+| drink | Drink (Drink) | bags | subclass 5 and spell is Drink or neither | no |
+| fooddrink | Food & Drink (Meals) | bags | anything food or drink takes; food (and neither) first, then drink | no |
+| potions | Potions (Potion) | bags | subclass 1 | yes |
+| elixirs | Elixirs (Elixir) | bags | subclass 2 or 3 | yes |
+| bandages | Bandages (Aid) | bags | subclass 7 | yes |
+| scrolls | Scrolls (Scroll) | bags | subclass 4 | yes |
+
+The label is what the window and chat say. The macro name (amended 2026-10-12) is what the action bar shows under the button, which cuts off past about 6 characters; so it is short. Setup renames a macro an earlier build made under its label (`Macro.Tidy`, by body, out of combat).
 
 "Neither" means a subclass-5 item whose spell is neither Food nor Drink (Refreshment-style, or
 no spell): it shows on both bars. Food and Drink are compared with the client's own names for
@@ -210,7 +212,7 @@ Messages: "Can't open professions in combat.", "Put the Potions button on an act
 
 ### Options.lua
 
-`GoblinFlyoutDB = { layouts = { <key> = "horizontal" | "vertical" }, minimap = { angle = 225 }, window = { point, relativePoint, x, y } }`.
+`GoblinFlyoutDB = { layouts = { <key> = "horizontal" | "vertical" }, minimap = { angle = 225, hide = false }, window = { point, relativePoint, x, y } }`.
 `Options.Init(db)` fills and repairs every field in place (unknown keys/values reset; default
 layout Horizontal for every kind). `Options.Other(layout)`. `Options.Register(openWindow)` adds
 Esc > Options > AddOns > Goblin Flyout with one button, "Open Goblin Flyout"; false when the
@@ -250,7 +252,7 @@ Flyout" is a gold `Look.Button`.
 `GoblinFlyoutMinimapButton`, parented to `Minimap`, wearing `Media\icon.tga` (also the TOC's
 `IconTexture`): GoblinQuest's icon recipe (`tools/make_icon.py`, Cinzel, SIL OFL) with "GF" on an
 oxblood disc, picked by the owner 2026-10-12. The icon has its own gold rim, so no border art.
-Left-click toggles the window; drag moves it round the rim and saves `minimap.angle`. Tooltip:
+Left-click toggles the window; drag moves it round the rim and saves `minimap.angle`. Hidden when `minimap.hide` (the window's "Show minimap button" check box, or `/gf minimap`); `/gf` and the Settings page still open the window. Tooltip:
 "Goblin Flyout" / "Click for options, drag to move." / "Time is money, friend." (gold). Pure:
 `MinimapButton.Position(angle, radius)` → x, y offset from the centre, and
 `MinimapButton.Angle(dx, dy)` → degrees 0..360.
@@ -269,6 +271,7 @@ Slash `/gf` and `/goblinflyout`:
 | `/gf`, `/gf options` | Toggles the window |
 | `/gf <kind>` | Puts that kind's button on the cursor (makes the macro if needed); out of combat |
 | `/gf layout <kind>` | Flips that kind's layout |
+| `/gf minimap` | Hides or shows the minimap button (amended 2026-10-12; also the window's check box) |
 | `/gf probe` | Professions as `/pf probe` did; every bag consumable with subclass, spell and the kinds it lands in; each kind's macro and visible slot count; snippets working or not; `attempt()` errors |
 
 ## Error handling

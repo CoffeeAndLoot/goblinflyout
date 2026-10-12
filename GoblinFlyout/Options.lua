@@ -14,7 +14,7 @@ Options.DEFAULT_LAYOUT = "horizontal"
 Options.DEFAULT_ANGLE = 225  -- degrees round the minimap: bottom-left
 
 -- The SavedVariable with every field valid: { layouts = { <kind key> = layout },
--- minimap = { angle }, window = { point, relativePoint, x, y } | nil }.
+-- minimap = { angle, hide }, window = { point, relativePoint, x, y } | nil }.
 -- Keeps the given table, so writes to it are saved.
 function Options.Init(db)
     if type(db) ~= "table" then
@@ -27,9 +27,11 @@ function Options.Init(db)
         layouts[kind.key] = (layout ~= nil and Options.LABELS[layout]) and layout or Options.DEFAULT_LAYOUT
     end
     db.layouts = layouts
-    if type(db.minimap) ~= "table" or type(db.minimap.angle) ~= "number" then
-        db.minimap = { angle = Options.DEFAULT_ANGLE }
-    end
+    local minimap = type(db.minimap) == "table" and db.minimap or {}
+    db.minimap = {
+        angle = type(minimap.angle) == "number" and minimap.angle or Options.DEFAULT_ANGLE,
+        hide = minimap.hide == true,  -- shown unless hidden on purpose
+    }
     local window = db.window
     if not (type(window) == "table" and type(window.point) == "string" and type(window.relativePoint) == "string"
         and type(window.x) == "number" and type(window.y) == "number") then

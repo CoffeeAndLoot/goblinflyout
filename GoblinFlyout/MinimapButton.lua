@@ -74,6 +74,13 @@ function MinimapButton.Create(core)
     end)
     button.angle = core.Angle()
     place(button.angle)
+    button:SetShown(core.MinimapShown())
+end
+
+function MinimapButton.SetShown(shown)
+    if button then
+        button:SetShown(shown and true or false)
+    end
 end
 
 return MinimapButton

@@ -53,6 +53,16 @@ return function(h, loaded)
             h.eq(Kinds.ByKey("professions").empty, "No crafting professions known.")
             h.eq(Kinds.ByKey("fooddrink").empty, "No food or drink in your bags.")
         end)
+        h.it("each macro has a short name that fits under an action button, and no two match", function()
+            local macros, seen = {}, {}
+            for _, kind in ipairs(Kinds.LIST) do
+                h.truthy(#kind.macro <= 6, kind.macro .. " is longer than 6")
+                h.falsy(seen[kind.macro], "duplicate macro name " .. kind.macro)
+                seen[kind.macro] = true
+                macros[#macros + 1] = kind.macro
+            end
+            h.eq(table.concat(macros, ","), "Prof,Food,Drink,Meals,Potion,Elixir,Aid,Scroll")
+        end)
         h.it("Food & Drink joins Food and Drink (the window draws the bracket from this)", function()
             h.eq(table.concat(Kinds.ByKey("fooddrink").joins, ","), "food,drink")
             h.eq(Kinds.ByKey("food").joins, nil)

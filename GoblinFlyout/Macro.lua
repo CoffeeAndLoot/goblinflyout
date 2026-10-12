@@ -33,11 +33,21 @@ function Macro.Ensure(kind)
     if ns.API.AccountMacrosFull() then
         return nil, "full"
     end
-    index = ns.API.CreateMacro(kind.label, kind.icon, Macro.Body(kind))
+    index = ns.API.CreateMacro(kind.macro, kind.icon, Macro.Body(kind))
     if not index then
         return nil, "failed"
     end
     return index
+end
+
+-- Gives the kind's macro, if made, its short name: the first builds named it
+-- after the label, which the action bar cuts off. Body and icon stay. Out of
+-- combat only (Core calls it at setup).
+function Macro.Tidy(kind)
+    local index = Macro.Index(kind)
+    if index and ns.API.MacroName(index) ~= kind.macro then
+        ns.API.RenameMacro(index, kind.macro)
+    end
 end
 
 -- Puts the kind's button on the cursor. nil when it did; else what went wrong.

@@ -131,6 +131,23 @@ function Look.Button(parent, text, width, height, onClick, style)
     return b
 end
 
+-- A square outlined check box: a raised well, gold inside when on.
+-- b.SetOn(on) draws it; onClick decides what a click means.
+function Look.Check(parent, size, onClick)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(size, size)
+    Look.Texture(b, "BACKGROUND", Look.COLOUR.raised):SetAllPoints(b)
+    Look.Outline(b, Look.COLOUR.line)
+    local mark = Look.Texture(b, "ARTWORK", Look.COLOUR.gold)
+    mark:SetPoint("TOPLEFT", b, "TOPLEFT", 4, -4)
+    mark:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -4, 4)
+    function b.SetOn(on)
+        mark:SetShown(on and true or false)
+    end
+    b:SetScript("OnClick", onClick)
+    return b
+end
+
 -- A square outlined button holding a white glyph tinted dim, or fallbackText
 -- when the file will not load (a new file before a full client restart).
 function Look.IconButton(parent, name, size, onClick, fallbackText)
