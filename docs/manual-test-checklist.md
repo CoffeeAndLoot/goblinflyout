@@ -27,13 +27,13 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
       border; "Goblin Flyout" in gold with "Time is money, friend." under it; a square close button
       with an X glyph (not the letter X) at the right of the header; no Blizzard window art.
       (Owner's screenshot 2026-10-12, the seven-row build: all seven stock icons drew.)
-- [ ] Below, an inset list of eight rows: Professions, Food, Drink, Food & Drink, Potions,
+- [x] Below, an inset list of eight rows: Professions, Food, Drink, Food & Drink, Potions,
       Elixirs, Bandages, Scrolls, each with its icon (book, food, drink, fork and knife, potion,
       elixir, bandage, scroll; no red question mark) in a thin outline, its name, and a
       Horizontal | Vertical switch with Horizontal gold. Thin rules between rows; names, "Food &
       Drink" too, don't run into the switch. A dim hint at the bottom: "Drag an icon onto an
       action bar to place its button."
-- [ ] A thin gold bracket in the left gutter joins the Food, Drink and Food & Drink rows: one line
+- [x] A thin gold bracket in the left gutter joins the Food, Drink and Food & Drink rows: one line
       down from Food's middle to Food & Drink's, with a short tick into each of the three icons.
 - [ ] Hovering an icon tints it gold and shows "<Kind> / Drag to an action bar."
 - [ ] The close button closes it.
@@ -81,7 +81,7 @@ Out of combat:
 - [ ] Vertical layout: a column straight up from the slot.
 - [ ] Escape, a click elsewhere, and paging the main bar close it.
 - [ ] Opening Elixirs while Potions is open closes Potions.
-- [ ] No bandages: "No bandages in your bags."
+- [x] No bandages: "No bandages in your bags."
 
 In combat (fight a mob):
 - [ ] The Potions button opens the bar in combat; clicking a potion drinks it and closes the bar.
