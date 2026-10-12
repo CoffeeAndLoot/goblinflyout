@@ -1,0 +1,87 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+# Goblin Flyout
+
+WoW Forever addon (interface 16001: Classic data on the 12.x engine, game type `camelot`).
+Seven macros on stock Blizzard action bars open bars of the player's professions, food, drink,
+potions, elixirs, bandages and scrolls. Spec: `docs/superpowers/specs/2026-10-12-goblin-flyout-design.md`
+(its Nomenclature section names kind, button, bar, entry, host, toggle, plain/secure, window).
+Grown from `D:\ProfessionFlyout`, which stays as it is.
+
+## Rules
+
+- Blizzard source of truth: `D:\wow-api\1.60.1.70291\Interface\AddOns` (the `forever` branch).
+  `12.1.5.*` is Retail and never the authority. Never guess an API, event or template name.
+- "Verified in source" is not "verified in game". Only the owner runs the client; in-game
+  checks live in `docs/manual-test-checklist.md` and every UI change adds an entry. Tick a box
+  only for what the owner saw; `[-]` means skipped by choice, with the reason.
+- `API.lua` is the only file that calls Blizzard game APIs, each through `attempt()`.
+- Pure modules touch no Blizzard global at file load; test/run.lua loads them.
+- No libraries. Nothing secure is created, changed or shown by insecure code in combat.
+- Snippet text (`Bar.TOGGLE_SNIPPET`, `Bar.CLOSE_PRE`, `Bar.CLOSE_POST`) may not contain `{`, `}`
+  or the word `function`: the restricted environment refuses them, silently in combat.
+- Adding a file to the TOC needs a full client restart, not `/reload`. Say so.
+- Calendar versions (`2026.10.12`, `.2` for a second that day), written only in the TOC.
+- Commit after each change: `Area: plain sentence`. Push only when the owner asks (no remote yet).
+
+## How it fits together
+
+TOC load order is `API, Kinds, Professions, Items, Options, Macro, Bar, Window, MinimapButton, Core`.
+
+1. `Kinds.LIST` is the seven kinds as data: key, label, icon, source (`professions` / `bags`),
+   `secure` (opens in combat), `accepts(item, names)` filter, plus derived `toggle` and `empty`.
+2. `/gf <kind>` or dragging a kind's icon in the window → `Macro.PickUp(kind)` finds the macro
+   **by body** (`/click GoblinFlyout<Label>`), creates it if missing, and puts it on the cursor.
+3. Pressing the macro `/click`s the kind's toggle:
+   - plain (professions, food, drink): an insecure Button → `Bar.TogglePlain`; refuses in combat.
+   - secure (potions, elixirs, bandages, scrolls): a `SecureHandlerClickTemplate` Button.
+     Its insecure `PreClick` (`Bar.BeforeSecureClick`) rebuilds out of combat; its `_onclick`
+     snippet shows or hides the bar, in combat too.
+4. Entries are rebuilt out of combat only: on open, at `PLAYER_REGEN_DISABLED` (secure bars, the
+   last moment changes are allowed), and at `PLAYER_REGEN_ENABLED` (open bars). Counts and
+   cooldowns are drawn only, so they update in combat on `BAG_UPDATE_DELAYED`/`BAG_UPDATE_COOLDOWN`.
+5. Every bar is a `SecureHandlerBaseTemplate` frame; each entry's click is wrapped so a used entry
+   hides its bar in or out of combat. Escape is on for every bar only out of combat.
+6. Core says messages that Bar and Macro return; every handler runs behind `guard(label, ...)`,
+   one error per label per session. Setup waits until out of combat.
+
+## Client facts (verified in game, build 1.60.1.70338)
+
+- Secure snippets work (the 69913 `loadstring_untainted` bug was fixed in 70009).
+- Consumables (classID 0) carry modern subclasses: 1 Potion, 2 Elixir, 4 Scroll, 5 Food & Drink
+  (3 Flask and 7 Bandage by the same table). Food vs drink is the item's spell: Food (433), Drink (430).
+- Profession facts carried from ProfessionFlyout: `C_TradeSkillUI.CanTradeSkillShowCraftingUI`
+  picks the crafting spell; Mining opens Smelting 2656; Skinning opens via Tanning; entry
+  template order `"ActionButtonTemplate, SecureActionButtonTemplate"` with `useOnKeyDown = false`.
+- `/gf probe` prints professions, every bag consumable with its subclass, spell and kinds, each
+  kind's macro and slot count, whether snippets work, and `attempt()` errors. Ask the owner for
+  its output before guessing about client behavior.
+
+## Deploy
+
+The addon folder is junctioned into the client:
+`New-Item -ItemType Junction -Path "D:\World of Warcraft\_classic_beta_\Interface\AddOns\GoblinFlyout" -Target "D:\GoblinFlyout\GoblinFlyout"`
+
+## Commands (this Windows box)
+
+Tests through `lupa` from the repo root; there is no per-test filter, always run it all:
+
+```
+python -c "import lupa.lua51 as L; lua=L.LuaRuntime(unpack_returned_tuples=True); print(lua.execute(open('test/run.lua').read().replace('os.exit(harness.run())','return harness.run()')))"
+```
+
+`test/run.lua` keeps two **hand-kept lists**: pure modules (TOC order) and suites. A new module or
+`test/test_*.lua` must be added there or it silently does not run.
+
+luacheck and lua-language-server:
+
+```
+$env:PATH = "$HOME\AppData\Local\Programs\Lua\bin;$env:PATH"
+$env:LUA_PATH = "$HOME\.luarocks\share\lua\5.4\?.lua;$HOME\.luarocks\share\lua\5.4\?\init.lua;;"
+lua "$HOME\.luarocks\share\lua\5.4\luacheck\main.lua" GoblinFlyout test --no-color --no-cache
+lua-language-server --check D:\GoblinFlyout --checklevel=Warning --check_out_path=$env:TEMP\gf-luals.json
+```
+
+Keep both at zero warnings. A new WoW global goes in both `.luacheckrc` and `.luarc.json`.
