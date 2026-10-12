@@ -11,6 +11,7 @@ local modules = {
     { "Options", "GoblinFlyout/Options.lua" },
     { "Macro", "GoblinFlyout/Macro.lua" },
     { "Bar", "GoblinFlyout/Bar.lua" },
+    { "MinimapButton", "GoblinFlyout/MinimapButton.lua" },
 }
 
 local ns = {}
@@ -27,6 +28,7 @@ local suites = {
     "test/test_options.lua",
     "test/test_macro.lua",
     "test/test_bar.lua",
+    "test/test_minimap.lua",
 }
 
 for i = 1, #suites do
