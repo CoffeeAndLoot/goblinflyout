@@ -41,6 +41,10 @@ Made for **WoW Forever** (interface 16001).
 | Scrolls | Your scrolls. | **Yes** |
 | Travel | Your Hearthstone, Teleport: Moonglade, Astral Recall, and a mage's teleports and portals. | No |
 
+![The Food & Drink bar open above its Meals button: food first, then drinks, with stack counts](https://raw.githubusercontent.com/CoffeeAndLoot/goblinflyout/master/images/gallery/2-food-and-drink.png)
+
+![The Professions bar open above its Prof button, its tooltip showing Skinning 144/225](https://raw.githubusercontent.com/CoffeeAndLoot/goblinflyout/master/images/gallery/3-professions.png)
+
 ## Getting started
 
 1. Click the round **GF** button on the minimap, or type `/gf`.
@@ -57,6 +61,8 @@ Elixir, Aid, Scroll, Travel), so it keeps its keybind, works on every bar page a
 - **Horizontal | Vertical:** which way that button's bar opens.
 - **Show minimap button:** untick to hide it. `/gf` still opens the window, and so does
   Esc > Options > AddOns > Goblin Flyout.
+
+![Blizzard's macro icon picker, opened by right-clicking a button's icon in the Goblin Flyout window](https://raw.githubusercontent.com/CoffeeAndLoot/goblinflyout/master/images/gallery/4-your-icons.png)
 
 ## In combat
 
