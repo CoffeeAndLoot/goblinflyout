@@ -37,7 +37,7 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
       down from Food's middle to Food & Drink's, with a short tick into each of the three icons.
 - [ ] Hovering an icon tints it gold and shows "<Kind> / Drag to an action bar. / Right-click to
       change its icon."
-- [ ] Right-clicking a row's icon opens Esc > Macros on that kind's macro (General tab, it
+- [x] Right-clicking a row's icon opens Esc > Macros on that kind's macro (General tab, it
       selected) with the "Change Name/Icon" picker open; a kind with no macro yet gets one first.
 - [ ] Picking an icon there and pressing Okay changes the button on the action bar, and the
       Goblin Flyout row shows the new icon at once (window left open) and after `/reload`.
@@ -50,7 +50,7 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] Dragging an icon onto an action slot places that kind's button; Esc > Macros > General shows
       the macro with the same icon and its short name: Prof, Food, Drink, Meals, Potion, Elixir,
       Aid or Scroll. Each label fits under its button, uncut.
-- [ ] Macros made by the first build (named "Professions", "Food & Drink" ...) are renamed to the
+- [x] Macros made by the first build (named "Professions", "Food & Drink" ...) are renamed to the
       short names at login; the buttons already placed keep working and show the short label.
 - [ ] Clicking an icon puts the button on the cursor; clicking a slot places it.
 - [ ] Doing either again makes no second macro.
