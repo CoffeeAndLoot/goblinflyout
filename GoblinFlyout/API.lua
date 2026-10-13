@@ -311,6 +311,51 @@ function API.ItemCooldown(itemID)
     return attempt("GetItemCooldown", C_Container.GetItemCooldown, itemID)
 end
 
+-- start, duration, enable for a spell's cooldown (C_Spell.GetSpellCooldown's
+-- SpellCooldownInfo), or nil.
+function API.SpellCooldown(spellID)
+    if not (C_Spell and C_Spell.GetSpellCooldown) then
+        return nil
+    end
+    local info = attempt("GetSpellCooldown", C_Spell.GetSpellCooldown, spellID)
+    if type(info) ~= "table" then
+        return nil
+    end
+    return info.startTime, info.duration, info.isEnabled
+end
+
+-- { [spellID] = { name, icon } } for the spells in ids the player knows.
+function API.KnownSpells(ids)
+    local known = {}
+    if not (C_SpellBook and C_SpellBook.IsSpellKnown and C_Spell and C_Spell.GetSpellName) then
+        return known
+    end
+    for _, id in ipairs(ids) do
+        if attempt("IsSpellKnown", C_SpellBook.IsSpellKnown, id) then
+            local icon = C_Spell.GetSpellTexture and attempt("GetSpellTexture", C_Spell.GetSpellTexture, id)
+            known[id] = { name = attempt("GetSpellName", C_Spell.GetSpellName, id), icon = icon }
+        end
+    end
+    return known
+end
+
+-- { [itemID] = { name, icon, count } } for the items in ids in the bags. An
+-- item the client hasn't cached yet comes back without a name.
+function API.Carried(ids)
+    local carried = {}
+    if not (C_Item and C_Item.GetItemInfo) then
+        return carried
+    end
+    for _, id in ipairs(ids) do
+        local count = API.ItemCount(id)
+        if count > 0 then
+            local name, _, _, _, _, _, _, _, _, icon = attempt("GetItemInfo", C_Item.GetItemInfo, id)
+            carried[id] = { name = name, icon = icon, count = count }
+        end
+    end
+    return carried
+end
+
 -- Whether secure snippets run on this build (the 69913 bug left
 -- loadstring_untainted nil and broke them all). Out of combat only; called
 -- once, at setup.

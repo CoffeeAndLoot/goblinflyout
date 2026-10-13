@@ -7,14 +7,14 @@ Base: `D:\ProfessionFlyout` (left as it is; Goblin Flyout is a new addon that gr
 
 ## Goal
 
-Eight buttons on stock Blizzard action bars, each opening a small bar ("flyout") of things to
+Nine buttons on stock Blizzard action bars, each opening a small bar ("flyout") of things to
 use: the player's crafting professions, and the food, drink, potions, elixirs, bandages and
 scrolls in their bags. Consumables are listed best first. Potions, elixirs, bandages and scrolls
 open and work in combat. It looks and feels like stock Blizzard UI.
 
 ## Nomenclature
 
-- **Kind**: one of the eight flyouts (professions, food, drink, food & drink, potions, elixirs, bandages, scrolls).
+- **Kind**: one of the nine flyouts (professions, food, drink, food & drink, potions, elixirs, bandages, scrolls, travel).
 - **Button**: a kind's macro, placed by the player in a stock Blizzard action slot.
 - **Bar**: our flyout of entries that opens next to the button.
 - **Entry**: one profession or one item on a bar.
@@ -40,7 +40,7 @@ open and work in combat. It looks and feels like stock Blizzard UI.
 ## Scope
 
 In:
-- The eight kinds below, each its own button, macro and bar.
+- The nine kinds below, each its own button, macro and bar.
 - Per-kind layout: Horizontal (default) or Vertical.
 - Own options window with each kind's icon (drag or click it to pick up the button), name and
   a Horizontal | Vertical switch. A hand-made minimap button opens it. Both wear the Goblin look
@@ -70,6 +70,7 @@ Out (YAGNI):
 | elixirs | Elixirs (Elixir) | bags | subclass 2 or 3 | yes |
 | bandages | Bandages (Aid) | bags | subclass 7 | yes |
 | scrolls | Scrolls (Scroll) | bags | subclass 4 | yes |
+| travel | Travel (Travel) | travel | Travel.lua's list: what the player knows or carries | no |
 
 The label is what the window and chat say. The macro name (amended 2026-10-12) is what the action bar shows under the button, which cuts off past about 6 characters; so it is short. Setup renames a macro an earlier build made under its label (`Macro.Tidy`, by body, out of combat).
 
@@ -109,9 +110,10 @@ D:\GoblinFlyout\
   GoblinFlyout\
     GoblinFlyout.toc   ## Interface: 16001, SavedVariables: GoblinFlyoutDB
     API.lua            the only Blizzard caller; every call through attempt(); owns the event frame
-    Kinds.lua          pure: the eight kinds as data, in window order
+    Kinds.lua          pure: the nine kinds as data, in window order
     Professions.lua    pure: copied from ProfessionFlyout, unchanged in behaviour
     Items.lua          pure: raw bag items -> one kind's sorted entries
+    Travel.lua         pure: the Hearthstone and travel spells -> the Travel bar's entries
     Look.lua           the Goblin look: palette, fonts, flat pieces (from GoblinQuest)
     Options.lua        SavedVariable shape; stub Settings page
     Macro.lua          find / create / pick up a kind's macro
@@ -131,7 +133,7 @@ junction into `D:\World of Warcraft\_classic_beta_\Interface\AddOns\GoblinFlyout
 
 ### Kinds.lua (pure)
 
-`Kinds.LIST`: the eight rows in the order above, each
+`Kinds.LIST`: the nine rows in the order above, each
 `{ key, label, macroName, icon, source = "professions" | "bags", secure = bool, accepts = function(item, names) }`.
 `Kinds.ByKey(key)` returns a row or nil. `accepts` gets a raw item and the localized
 `{ food, drink }` spell names; Professions has no `accepts`.
@@ -152,6 +154,19 @@ Input: raw bag items `{ itemID, name, icon, count, classID, subclassID, itemLeve
 4. Sort: `itemLevel` desc, `minLevel` desc, `name` asc (missing numbers count as 0).
 
 Output: `{ itemID, name, icon, count }`, never nil.
+
+### Travel.lua (pure; amended 2026-10-12, the owner's ask)
+
+`Travel.ORDER`, then `Travel.Entries(known, carried)` keeps only what the player has, in this
+order: the Hearthstone (item 6948); Teleport: Moonglade (18960, druid) and Astral Recall (556,
+shaman); the mage teleports (3561, 3562, 3565, 3567, 3563, 3566) and then the portals (10059,
+11416, 11419, 11417, 11418, 11420), both in the city order Stormwind, Ironforge, Darnassus,
+Orgrimmar, Undercity, Thunder Bluff. Classic IDs: WoW Forever kept Moonglade's 18960 (seen in game
+2026-10-12); the mage IDs are unwalked until a mage is played. Known spells come from
+`C_SpellBook.IsSpellKnown`, the Hearthstone from the bag count; names and icons from the client.
+Entries carry their own `type` (`item` or `spell`): the bar sets each entry's secure type on
+every rebuild (`Bar.ActionType`). Spell entries show the spell tooltip and its cooldown sweep
+(`C_Spell.GetSpellCooldown`, refreshed on `SPELL_UPDATE_COOLDOWN`). Out of combat only.
 
 ### API.lua
 
@@ -238,7 +253,7 @@ the bar they open from.
 
 `GoblinFlyoutWindow`: GoblinQuest's window chrome. A `window` fill, a `line` outline, a 2 px gold
 top edge, and a header (drag handle) with "Goblin Flyout" in gold Friz 17, the tagline "Time is
-money, friend." in dim Friz 10, and a close glyph button. Below it an inset well of eight rows
+money, friend." in dim Friz 10, and a close glyph button. Below it an inset well of nine rows
 in `Kinds.LIST` order:
 - the kind's macro icon (`Macro.Icon`: the player's pick, else the default; redrawn on
   `UPDATE_MACROS`) as a button: `OnDragStart` and left-click call `Macro.PickUp(kind)`;
@@ -295,7 +310,7 @@ Slash `/gf` and `/goblinflyout`:
 ## Testing
 
 - Unit tests through Python `lupa` (`test/run.lua`, the ProfessionFlyout harness): `Kinds`
-  (eight rows, unique keys and toggle names, every filter), `Items` (filters, Food/Drink/neither,
+  (nine rows, unique keys and toggle names, every filter), `Items` (filters, Food/Drink/neither,
   stack merge, sort and ties, junk input), `Professions` (carried over), `Macro.IsOurs`,
   `Bar.Positions/PickHost/ENTRY_*`, snippet text the restricted environment accepts, `Options.Init/Other`, `MinimapButton.Position/Angle`.
 - `docs/manual-test-checklist.md`: an in-game entry for every UI path: each kind opens and uses

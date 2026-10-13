@@ -64,6 +64,9 @@ Kinds.LIST = {
       secure = true, accepts = function(item) return consumable(item, Kinds.BANDAGE) end },
     { key = "scrolls", label = "Scrolls", macro = "Scroll", icon = "INV_Scroll_03", source = "bags", secure = true,
       accepts = function(item) return consumable(item, Kinds.SCROLL) end },
+    -- The Hearthstone and travel spells (Travel.lua): casting a trip home is no use in a fight.
+    { key = "travel", label = "Travel", macro = "Travel", icon = "INV_Misc_Rune_01", source = "travel",
+      secure = false, empty = "No hearthstone or travel spells." },
 }
 
 Kinds.KEYS = {}

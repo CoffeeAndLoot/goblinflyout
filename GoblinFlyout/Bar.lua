@@ -81,10 +81,16 @@ function Bar.PickHost(hosts, prefer)
     return hosts[1]
 end
 
+-- The entry's secure action type: its own (a Travel entry is a spell or an
+-- item), else its kind's.
+function Bar.ActionType(kind, entry)
+    return entry.type or Bar.ENTRY_TYPE[kind.source]
+end
+
 -- What the entry's secure action gets: a spell ID, or "item:<id>"
 -- (SecureCmdItemParse hands it to C_Item.UseItemByName).
 function Bar.ActionValue(kind, entry)
-    if kind.source == "professions" then
+    if Bar.ActionType(kind, entry) == "spell" then
         return entry.spellID
     end
     return "item:" .. entry.itemID
@@ -112,12 +118,14 @@ end
 
 local GOLD = { 1, 0.82, 0 }  -- NORMAL_FONT_COLOR, the tooltip's body color
 
--- An item shows its own tooltip; a profession its name and skill level, as
--- Blizzard's profession tabs show it.
+-- An item or a travel spell shows its own tooltip; a profession its name and
+-- skill level, as Blizzard's profession tabs show it.
 local function onEnter(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
     if self.itemID then
         GameTooltip:SetItemByID(self.itemID)
+    elseif self.spellTooltip then
+        GameTooltip:SetSpellByID(self.spellTooltip)
     else
         GameTooltip:SetText(self.label)
         if self.skill then
@@ -137,24 +145,37 @@ local function countString(button)
     return button.Count or (button.TextOverlayContainer and button.TextOverlayContainer.Count)
 end
 
+-- The item's or spell's cooldown sweep (Astral Recall, the Hearthstone).
+local function sweep(button)
+    if not button.cooldown then
+        return
+    end
+    local start, duration, enable
+    if button.itemID then
+        start, duration, enable = ns.API.ItemCooldown(button.itemID)
+    elseif button.spellID then
+        start, duration, enable = ns.API.SpellCooldown(button.spellID)
+    end
+    if (enable == 1 or enable == true) and type(duration) == "number" and duration > 0 then
+        button.cooldown:SetCooldown(start, duration)
+    else
+        button.cooldown:Clear()
+    end
+end
+
 -- Count, grey-out at 0, and cooldown sweep: drawn only, so allowed in combat.
 local function refresh(bar)
     for _, button in ipairs(bar.entries) do
-        if button:IsShown() and button.itemID then
-            local count = ns.API.ItemCount(button.itemID)
-            local text = countString(button)
-            if text then
-                text:SetText(Bar.CountText(count))
-            end
-            button.icon:SetDesaturated(count == 0)
-            if button.cooldown then
-                local start, duration, enable = ns.API.ItemCooldown(button.itemID)
-                if (enable == 1 or enable == true) and type(duration) == "number" and duration > 0 then
-                    button.cooldown:SetCooldown(start, duration)
-                else
-                    button.cooldown:Clear()
+        if button:IsShown() then
+            if button.itemID then
+                local count = ns.API.ItemCount(button.itemID)
+                local text = countString(button)
+                if text then
+                    text:SetText(Bar.CountText(count))
                 end
+                button.icon:SetDesaturated(count == 0)
             end
+            sweep(button)
         end
     end
 end
@@ -187,7 +208,6 @@ local function entry(bar, i)
     for name, value in pairs(Bar.ENTRY_ATTRIBUTES) do
         button:SetAttribute(name, value)
     end
-    button:SetAttribute("type", Bar.ENTRY_TYPE[bar.kind.source])
     button:HookScript("OnEnter", onEnter)
     button:HookScript("OnLeave", onLeave)
     button:SetScript("PostClick", function(self)
@@ -201,20 +221,31 @@ end
 local function entriesFor(kind)
     if kind.source == "professions" then
         return ns.Professions.Entries(ns.API.RawProfessions())
+    elseif kind.source == "travel" then
+        local Travel = ns.Travel
+        return Travel.Entries(ns.API.KnownSpells(Travel.SpellIDs()), ns.API.Carried(Travel.ItemIDs()))
     end
     return ns.Items.Entries(ns.API.BagItems(), kind, ns.API.FoodDrinkNames())
 end
 
--- Fills, sizes and anchors the bar on bar.host. Out of combat only.
+local OTHER = { spell = "item", item = "spell" }
+
+-- Fills, sizes and anchors the bar on bar.host. Out of combat only. The action
+-- type is set per entry: a Travel bar mixes the Hearthstone and spells.
 local function fill(bar, list, layout)
-    local actionType = Bar.ENTRY_TYPE[bar.kind.source]
     for i, item in ipairs(list) do
         local button = entry(bar, i)
+        local actionType = Bar.ActionType(bar.kind, item)
+        button:SetAttribute("type", actionType)
         button:SetAttribute(actionType, Bar.ActionValue(bar.kind, item))
+        button:SetAttribute(OTHER[actionType], nil)
         button.icon:SetTexture(item.icon)
         button.label = item.name
         button.skill = item.skill
         button.itemID = item.itemID
+        button.spellID = item.spellID
+        -- A profession keeps its own tooltip (Skinning casts Tanning); a travel spell shows the spell's.
+        button.spellTooltip = bar.kind.source ~= "professions" and item.spellID or nil
         local text = countString(button)
         if text then
             text:SetText("")

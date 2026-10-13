@@ -14,9 +14,17 @@ return function(h, loaded)
     end
 
     h.describe("Kinds.LIST", function()
-        h.it("eight kinds in the window's order, Food & Drink under Drink", function()
-            h.eq(table.concat(Kinds.KEYS, ","), "professions,food,drink,fooddrink,potions,elixirs,bandages,scrolls")
-            h.eq(#Kinds.LIST, 8)
+        h.it("nine kinds in the window's order, Food & Drink under Drink, Travel last", function()
+            h.eq(table.concat(Kinds.KEYS, ","),
+                "professions,food,drink,fooddrink,potions,elixirs,bandages,scrolls,travel")
+            h.eq(#Kinds.LIST, 9)
+        end)
+        h.it("Travel opens out of combat only and says so when there's nothing to take", function()
+            local travel = Kinds.ByKey("travel")
+            h.eq(travel.source, "travel")
+            h.falsy(travel.secure)
+            h.eq(travel.toggle, "GoblinFlyoutTravel")
+            h.eq(travel.empty, "No hearthstone or travel spells.")
         end)
         h.it("each toggle is GoblinFlyout plus the label, and every toggle is unique", function()
             h.eq(Kinds.ByKey("potions").toggle, "GoblinFlyoutPotions")
@@ -61,7 +69,7 @@ return function(h, loaded)
                 seen[kind.macro] = true
                 macros[#macros + 1] = kind.macro
             end
-            h.eq(table.concat(macros, ","), "Prof,Food,Drink,Meals,Potion,Elixir,Aid,Scroll")
+            h.eq(table.concat(macros, ","), "Prof,Food,Drink,Meals,Potion,Elixir,Aid,Scroll,Travel")
         end)
         h.it("Food & Drink joins Food and Drink (the window draws the bracket from this)", function()
             h.eq(table.concat(Kinds.ByKey("fooddrink").joins, ","), "food,drink")

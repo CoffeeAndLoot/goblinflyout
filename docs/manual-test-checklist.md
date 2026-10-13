@@ -88,6 +88,21 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 - [ ] No food in the bags: "No food in your bags."
 - [ ] `/click GoblinFlyoutFood` with the macro on no bar: "Put the Food button on an action bar (/gf food)."
 
+## Travel
+
+- [ ] After a **full client restart** (Travel.lua is new), the window has a ninth row, Travel,
+      under Scrolls, with the Hearthstone icon; dragging it places a "Travel" macro.
+- [ ] On the druid, Travel opens: Hearthstone first (count 1), then Teleport: Moonglade.
+      Hovering each shows its own tooltip (the Hearthstone says where it is set).
+- [ ] Clicking the Hearthstone starts the hearth cast and closes the bar; afterwards its entry
+      shows the cooldown sweep.
+- [ ] Clicking Teleport: Moonglade casts it and closes the bar.
+- [ ] Clicking the Travel button in combat: "Can't open travel in combat."
+- [ ] `/gf probe` ends with "Probe: travel -> 6948 Hearthstone, 18960 Teleport: Moonglade".
+- [-] A mage: teleports, then portals, each in city order. (Not walked: no mage of that level yet.)
+- [-] A shaman: Astral Recall after the Hearthstone, with its cooldown sweep after a cast. (Not
+      walked: no shaman yet.)
+
 ## Secure bars (Potions, Elixirs, Bandages, Scrolls)
 
 Out of combat:

@@ -1,6 +1,6 @@
 # Goblin Flyout
 
-A World of Warcraft addon for **WoW Forever** (interface 16001). Eight buttons for your stock
+A World of Warcraft addon for **WoW Forever** (interface 16001). Nine buttons for your stock
 Blizzard action bars, each opening a small bar built from Blizzard's own action button:
 
 | Button | Opens | In combat |
@@ -13,6 +13,7 @@ Blizzard action bars, each opening a small bar built from Blizzard's own action 
 | Elixirs | your elixirs and flasks | yes |
 | Bandages | your bandages | yes |
 | Scrolls | your scrolls | yes |
+| Travel | your Hearthstone, Teleport: Moonglade, Astral Recall, mage teleports and portals | no |
 
 Items are listed best first (highest item level), one entry per item with its count. In combat
 a bar shows what you had when the fight began; used-up items grey out until it ends.

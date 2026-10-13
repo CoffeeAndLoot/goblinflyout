@@ -170,6 +170,11 @@ function commands.probe()
     end
     local state = snippets == nil and "not checked yet" or (snippets and "work" or "don't work")
     say("Probe: secure snippets " .. state .. ".")
+    local trips, Travel = {}, ns.Travel
+    for _, entry in ipairs(Travel.Entries(API.KnownSpells(Travel.SpellIDs()), API.Carried(Travel.ItemIDs()))) do
+        trips[#trips + 1] = tostring(entry.spellID or entry.itemID) .. " " .. tostring(entry.name)
+    end
+    say("Probe: travel -> " .. (#trips > 0 and table.concat(trips, ", ") or "nothing known"))
     for name, message in pairs(API.Errors()) do
         say("Probe: " .. name .. " threw: " .. message)
     end
@@ -264,7 +269,7 @@ API.OnEvents({ "UPDATE_MACROS" }, function()
     guard("Window", Window.Refresh, Core)
 end)
 
-API.OnEvents({ "BAG_UPDATE_DELAYED", "BAG_UPDATE_COOLDOWN" }, function()
+API.OnEvents({ "BAG_UPDATE_DELAYED", "BAG_UPDATE_COOLDOWN", "SPELL_UPDATE_COOLDOWN" }, function()
     guard("Counts", Bar.Refresh)
 end)
 
