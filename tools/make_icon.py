@@ -138,16 +138,24 @@ def letters(im: Image.Image) -> Image.Image:
     return im
 
 
-def icon(name=DISC) -> Image.Image:
+def icon(name=DISC, size=SIZE) -> Image.Image:
     centre, edge = DISCS[name]
-    return letters(disc(centre, edge)).resize((SIZE, SIZE), Image.LANCZOS)
+    return letters(disc(centre, edge)).resize((size, size), Image.LANCZOS)
+
+
+THUMBNAIL = ROOT / "images" / "thumbnail.png"  # the Wago listing's thumbnail
+THUMBNAIL_SIZE = 512
 
 
 def main():
-    image = icon()
+    big = letters(disc(*DISCS[DISC]))
+    image = big.resize((SIZE, SIZE), Image.LANCZOS)
     DEST.parent.mkdir(parents=True, exist_ok=True)
     image.save(DEST)
     print("Wrote", DEST)
+    THUMBNAIL.parent.mkdir(parents=True, exist_ok=True)
+    big.resize((THUMBNAIL_SIZE, THUMBNAIL_SIZE), Image.LANCZOS).save(THUMBNAIL)
+    print("Wrote", THUMBNAIL)
     if len(sys.argv) > 1:  # previews for a human: full size and the minimap size, blown up
         out = Path(sys.argv[1])
         out.mkdir(parents=True, exist_ok=True)
