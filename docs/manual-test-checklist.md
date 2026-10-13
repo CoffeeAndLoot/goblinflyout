@@ -35,7 +35,15 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
       action bar to place its button."
 - [x] A thin gold bracket in the left gutter joins the Food, Drink and Food & Drink rows: one line
       down from Food's middle to Food & Drink's, with a short tick into each of the three icons.
-- [ ] Hovering an icon tints it gold and shows "<Kind> / Drag to an action bar."
+- [ ] Hovering an icon tints it gold and shows "<Kind> / Drag to an action bar. / Right-click to
+      change its icon."
+- [ ] Right-clicking a row's icon opens Esc > Macros on that kind's macro (General tab, it
+      selected) with the "Change Name/Icon" picker open; a kind with no macro yet gets one first.
+- [ ] Picking an icon there and pressing Okay changes the button on the action bar, and the
+      Goblin Flyout row shows the new icon at once (window left open) and after `/reload`.
+- [ ] Renaming the macro there too: the button keeps working; after `/reload` it is back to its
+      short name, with the picked icon kept.
+- [ ] Right-clicking an icon in combat: "Can't do that in combat."
 - [ ] The close button closes it.
 - [ ] The window drags by its header (not by the list); `/reload`: it reopens exactly where it
       was left, not clamped to an edge.

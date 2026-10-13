@@ -50,9 +50,16 @@ function Macro.Tidy(kind)
     end
 end
 
--- Puts the kind's button on the cursor. nil when it did; else what went wrong.
--- Out of combat only: the macro may have to be made first.
-function Macro.PickUp(kind)
+-- The kind's macro icon: the one the player picked in Blizzard's macro window,
+-- else the kind's default (no macro yet, or it won't say).
+function Macro.Icon(kind)
+    local index = Macro.Index(kind)
+    return index and ns.API.MacroIcon(index) or ("Interface\\Icons\\" .. kind.icon)
+end
+
+-- Runs act(index) on the kind's macro, made first if missing. nil when it ran;
+-- else what went wrong. Out of combat only: CreateMacro may be needed.
+local function withMacro(kind, act)
     if ns.API.InCombat() then
         return "Can't do that in combat."
     end
@@ -63,8 +70,18 @@ function Macro.PickUp(kind)
     if not index then
         return "Couldn't make the " .. kind.label .. " macro."
     end
-    ns.API.PickupMacro(index)
+    act(index)
     return nil
+end
+
+-- Puts the kind's button on the cursor.
+function Macro.PickUp(kind)
+    return withMacro(kind, ns.API.PickupMacro)
+end
+
+-- Opens Blizzard's macro window on the kind's macro, its icon picker open.
+function Macro.Edit(kind)
+    return withMacro(kind, ns.API.OpenMacroEditor)
 end
 
 return Macro

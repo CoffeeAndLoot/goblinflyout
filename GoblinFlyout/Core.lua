@@ -90,6 +90,21 @@ function Core.PickUp(kind)
     return placed
 end
 
+-- Opens Blizzard's macro window on the kind's macro to change its icon.
+function Core.EditIcon(kind)
+    guard("Change icon", function()
+        local message = Macro.Edit(kind)
+        if message then
+            say(message)
+        end
+    end)
+end
+
+-- The kind's macro icon, for the window's row.
+function Core.Icon(kind)
+    return Macro.Icon(kind)
+end
+
 local snippets  -- whether secure snippets ran at setup; nil until then
 
 -- /gf <word> [rest] -> handler(rest)
@@ -242,6 +257,11 @@ end)
 
 API.OnEvents({ "PLAYER_REGEN_ENABLED" }, function()
     guard("Combat", Bar.LeaveCombat, Core.Layout)
+end)
+
+-- A macro changed (an icon picked in Blizzard's macro window): the rows follow.
+API.OnEvents({ "UPDATE_MACROS" }, function()
+    guard("Window", Window.Refresh, Core)
 end)
 
 API.OnEvents({ "BAG_UPDATE_DELAYED", "BAG_UPDATE_COOLDOWN" }, function()

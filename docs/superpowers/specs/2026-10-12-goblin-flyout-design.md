@@ -236,8 +236,13 @@ the bar they open from.
 top edge, and a header (drag handle) with "Goblin Flyout" in gold Friz 17, the tagline "Time is
 money, friend." in dim Friz 10, and a close glyph button. Below it an inset well of eight rows
 in `Kinds.LIST` order:
-- the kind's icon as a button: `OnDragStart` and `OnClick` call `Macro.PickUp(kind)`; its
-  tooltip says "Drag to an action bar";
+- the kind's macro icon (`Macro.Icon`: the player's pick, else the default; redrawn on
+  `UPDATE_MACROS`) as a button: `OnDragStart` and left-click call `Macro.PickUp(kind)`;
+  right-click (amended 2026-10-12) calls `Macro.Edit(kind)`, which makes the macro if missing and
+  opens Blizzard's macro window on it with "Change Name/Icon" open. No picker or search of our
+  own: the client lists icons only as file IDs (27,715 on 70338), so search would need a shipped
+  name list, and the owner chose Blizzard's window. Its tooltip says "Drag to an action bar." /
+  "Right-click to change its icon.";
 - the label;
 - a Horizontal | Vertical switch (two flat buttons, the current one gold) bound to
   `GoblinFlyoutDB.layouts[key]`; a change closes that kind's bar if open (out of combat).

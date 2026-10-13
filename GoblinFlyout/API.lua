@@ -205,6 +205,37 @@ function API.MacroName(index)
     return type(name) == "string" and name or nil
 end
 
+-- The icon (a file ID or a path) of the account macro at index, or nil.
+function API.MacroIcon(index)
+    if not GetMacroInfo then
+        return nil
+    end
+    local _, icon = attempt("GetMacroInfo", GetMacroInfo, index)
+    if type(icon) == "number" or type(icon) == "string" then
+        return icon
+    end
+    return nil
+end
+
+-- Opens Blizzard's macro window (Esc > Macros) on the account macro at index,
+-- with its "Change Name/Icon" picker open, as if the player had clicked it:
+-- the General tab (macroBase 0, so the index is the macro's own), the macro
+-- selected, then the Edit button (Blizzard_MacroUI.lua). Not protected.
+function API.OpenMacroEditor(index)
+    if not ShowMacroFrame then
+        return
+    end
+    attempt("ShowMacroFrame", ShowMacroFrame)
+    if not (MacroFrame and MacroFrame.ChangeTab and MacroFrame.SelectMacro) then
+        return
+    end
+    attempt("MacroFrame:ChangeTab", MacroFrame.ChangeTab, MacroFrame, 1)
+    attempt("MacroFrame:SelectMacro", MacroFrame.SelectMacro, MacroFrame, index, true)
+    if MacroEditButton_OnClick and MacroEditButton then
+        attempt("MacroEditButton_OnClick", MacroEditButton_OnClick, MacroEditButton)
+    end
+end
+
 -- Renames a macro. A nil icon and body keep theirs, as Blizzard's macro UI
 -- relies on (Blizzard_MacroUI.lua EditMacro(actualIndex, nil, nil, body)).
 function API.RenameMacro(index, name)

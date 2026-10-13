@@ -21,6 +21,7 @@ Window.HEIGHT = L.TOP_EDGE + L.HEADER + L.PAD + #ns.Kinds.LIST * L.ROW + 2 * L.W
 
 local frame
 local switches = {}  -- kind key -> { horizontal = button, vertical = button }
+local arts = {}      -- kind key -> its row's icon texture
 local minimapCheck
 
 local function buildHeader(core)
@@ -72,18 +73,26 @@ local function row(core, well, kind, i)
     local art = icon:CreateTexture(nil, "ARTWORK")
     art:SetPoint("TOPLEFT", icon, "TOPLEFT", 1, -1)
     art:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", -1, 1)
-    art:SetTexture("Interface\\Icons\\" .. kind.icon)
     art:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+    arts[kind.key] = art  -- Window.Refresh draws the macro's own icon
     Look.Outline(icon, Look.COLOUR.line)
     local hover = Look.Texture(icon, "HIGHLIGHT", Look.COLOUR.gold, 0.25)
     hover:SetAllPoints(art)
+    icon:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     icon:RegisterForDrag("LeftButton")
     icon:SetScript("OnDragStart", function() core.PickUp(kind) end)
-    icon:SetScript("OnClick", function() core.PickUp(kind) end)
+    icon:SetScript("OnClick", function(_, mouseButton)
+        if mouseButton == "RightButton" then
+            core.EditIcon(kind)
+        else
+            core.PickUp(kind)
+        end
+    end)
     icon:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         GameTooltip:SetText(kind.label)
         GameTooltip:AddLine("Drag to an action bar.", 1, 1, 1)
+        GameTooltip:AddLine("Right-click to change its icon.", 1, 1, 1)
         GameTooltip:Show()
     end)
     icon:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -195,10 +204,14 @@ local function make(core)
     table.insert(UISpecialFrames, Window.NAME)  -- Escape closes it
 end
 
--- Lights each kind's current layout gold on its switch, and the minimap check.
+-- Lights each kind's current layout gold on its switch, draws each row's
+-- macro icon (the player's pick, else the default), and the minimap check.
 function Window.Refresh(core)
     if minimapCheck then
         minimapCheck.SetOn(core.MinimapShown())
+    end
+    for key, art in pairs(arts) do
+        art:SetTexture(core.Icon(ns.Kinds.ByKey(key)))
     end
     for key, switch in pairs(switches) do
         local layout = core.Layout(key)

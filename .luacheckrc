@@ -9,6 +9,7 @@ read_globals = {
     "GetProfessions", "GetProfessionInfo", "C_SpellBook", "C_TradeSkillUI", "Enum",
     "GetActionInfo", "ActionButtonUtil",
     "GetNumMacros", "GetMacroInfo", "CreateMacro", "EditMacro", "PickupMacro", "Constants",
+    "ShowMacroFrame", "MacroFrame", "MacroEditButton", "MacroEditButton_OnClick",
     "Settings", "SettingsPanel", "HideUIPanel",
     "C_Container", "C_Item", "C_Spell",
     "SecureHandlerExecute", "SecureHandlerWrapScript",

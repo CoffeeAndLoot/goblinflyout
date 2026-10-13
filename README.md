@@ -25,7 +25,8 @@ restart the game.
 ## Use
 
 Click the round GF button on the minimap (or type `/gf`) and drag a kind's icon onto an action bar. Each
-kind has its own Horizontal/Vertical button in that window.
+kind has its own Horizontal/Vertical button in that window. Right-click a kind's icon to pick
+a different icon in Blizzard's macro window; the button and the window follow it.
 
 | Command | Does |
 |---|---|
