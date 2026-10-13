@@ -5,7 +5,24 @@ return function(h, loaded)
         return { spellID = id, name = name, icon = id * 10 }
     end
 
+    h.describe("Professions.Indices", function()
+        h.it("Blizzard's tab order: both primaries, then every secondary, Fishing included", function()
+            -- GetProfessions() on Camelot: prof1, prof2, firstAid, fishing, cooking (and two more slots).
+            h.eq(table.concat(Professions.Indices(7, 9, 5, 4, 3), ","), "7,9,5,4,3")
+        end)
+        h.it("skips the professions the player hasn't learned, keeping the rest in order", function()
+            h.eq(table.concat(Professions.Indices(nil, 9, nil, 4, 3, nil, nil), ","), "9,4,3")
+            h.eq(#Professions.Indices(), 0)
+        end)
+    end)
+
     h.describe("Professions.Pick", function()
+        h.it("Fishing opens its window through Bait and Tackle, never the cast (seen in game)", function()
+            local pick = Professions.Pick({ name = "Fishing", skillLine = 356, spells = {
+                { spellID = 7620, name = "Fishing", craftingUI = false },
+                { spellID = 1278067, name = "Bait and Tackle", craftingUI = true } } })
+            h.eq(pick.spellID, 1278067)
+        end)
         h.it("picks the spell named after the profession, not Disenchant", function()
             local pick = Professions.Pick({ name = "Enchanting", skillLine = 333,
                 spells = { spell(13262, "Disenchant"), spell(7411, "Enchanting") } })

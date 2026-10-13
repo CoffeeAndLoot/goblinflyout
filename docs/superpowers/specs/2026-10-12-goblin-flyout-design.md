@@ -144,6 +144,13 @@ Copied from ProfessionFlyout: `Pick(raw)` and `Entries(raws)` as there (Mining o
 2656; otherwise the first non-passive spell where `CanTradeSkillShowCraftingUI` is true; name
 match only when the client gives no answer). Its unit tests come over too.
 
+Amended 2026-10-12: `Professions.Indices(...)` keeps every profession `GetProfessions()` returns,
+in Blizzard's tab order (prof1, prof2, First Aid, Fishing, Cooking on Camelot), as the Camelot
+Professions frame's `RefreshRightTabs` does. Fishing is no longer dropped: WoW Forever gives it a
+crafting window, opened by Bait and Tackle (1278067, `CanTradeSkillShowCraftingUI` true); its own
+spell Fishing (7620) casts a line and says false (both seen in game), so `Pick` takes Bait and
+Tackle, as it takes Tanning for Skinning.
+
 ### Items.lua (pure)
 
 Input: raw bag items `{ itemID, name, icon, count, classID, subclassID, itemLevel, minLevel, spellName }`.

@@ -67,7 +67,10 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 
 ## Plain bars (Professions, Food, Drink, Food & Drink)
 
-- [ ] Professions opens exactly as ProfessionFlyout's did (same entries, tooltips, windows).
+- [ ] Professions opens with the same entries, tooltips and windows as ProfessionFlyout's, plus
+      Fishing, in Blizzard's tab order: on the druid Leatherworking, Skinning, First Aid,
+      Fishing, Cooking. The Fishing entry shows "Fishing" and 1/75, and clicking it opens the
+      Fishing crafting window (Bait and Tackle), never a fishing cast.
 - [ ] Food opens a row of the food in the bags, best item level first; each entry shows its
       stack count and the item's own tooltip; clicking one eats it and closes the bar.
 - [ ] Drink likewise for drinks.

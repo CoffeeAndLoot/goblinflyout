@@ -43,6 +43,22 @@ function Professions.Pick(raw)
     return nil
 end
 
+-- The profession indices GetProfessions() returned, in Blizzard's tab order
+-- (Blizzard_Professions\Camelot\Blizzard_ProfessionsFrame.lua RefreshRightTabs:
+-- prof1, prof2, then every secondary: First Aid, Fishing, Cooking on Camelot),
+-- skipping the ones not learned. Fishing is kept: WoW Forever gives it a
+-- crafting window, opened by Bait and Tackle (seen in game 2026-10-12).
+function Professions.Indices(...)
+    local indices = {}
+    for i = 1, select("#", ...) do
+        local index = select(i, ...)
+        if index ~= nil then
+            indices[#indices + 1] = index
+        end
+    end
+    return indices
+end
+
 -- "122/150", as the profession book's skill bar reads, or nil without a rank.
 local function skillText(rank, maxRank)
     if type(rank) ~= "number" or type(maxRank) ~= "number" then

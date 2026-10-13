@@ -61,7 +61,9 @@ TOC load order is `API, Kinds, Professions, Items, Travel, Look, Options, Macro,
 - Consumables (classID 0) carry modern subclasses: 1 Potion, 2 Elixir, 4 Scroll, 5 Food & Drink
   (3 Flask and 7 Bandage by the same table). Food vs drink is the item's spell: Food (433), Drink (430).
 - Profession facts carried from ProfessionFlyout: `C_TradeSkillUI.CanTradeSkillShowCraftingUI`
-  picks the crafting spell; Mining opens Smelting 2656; Skinning opens via Tanning; entry
+  picks the crafting spell; Mining opens Smelting 2656; Skinning opens via Tanning; Fishing has a
+  crafting window too, opened via Bait and Tackle 1278067 (Fishing 7620 casts a line); the bar
+  follows Blizzard's tab order (prof1, prof2, First Aid, Fishing, Cooking); entry
   template order `"ActionButtonTemplate, SecureActionButtonTemplate"` with `useOnKeyDown = false`.
 - `/gf probe` prints professions, every bag consumable with its subclass, spell and kinds, each
   kind's macro and slot count, whether snippets work, and `attempt()` errors. Ask the owner for

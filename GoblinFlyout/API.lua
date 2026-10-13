@@ -91,18 +91,16 @@ local function rawProfession(index)
     return raw
 end
 
--- The known professions in the profession bar's order: prof1, prof2, cooking,
--- firstAid. On Camelot GetProfessions() returns prof1, prof2, firstAid,
--- fishing, cooking (Blizzard_ProfessionsBook\Camelot); fishing is dropped.
+-- The known professions in Blizzard's tab order (Professions.Indices): on
+-- Camelot GetProfessions() returns prof1, prof2, firstAid, fishing, cooking.
+-- Which of them get an entry is Professions.Pick's call, as it is the tabs'.
 function API.RawProfessions()
     if not (GetProfessions and GetProfessionInfo and C_SpellBook and C_SpellBook.GetSpellBookItemInfo) then
         return {}
     end
-    local prof1, prof2, firstAid, _, cooking = attempt("GetProfessions", GetProfessions)
-    local order = { prof1, prof2, cooking, firstAid }
     local raws = {}
-    for i = 1, 4 do
-        local raw = order[i] and rawProfession(order[i])
+    for _, index in ipairs(ns.Professions.Indices(attempt("GetProfessions", GetProfessions))) do
+        local raw = rawProfession(index)
         if raw then
             raws[#raws + 1] = raw
         end
