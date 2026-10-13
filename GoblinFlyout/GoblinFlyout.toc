@@ -1,8 +1,8 @@
 ## Interface: 16001
 ## Title: Goblin Flyout
-## Notes: Action bar buttons that open bars of your professions, food, drink, potions, elixirs, bandages, scrolls and ways home.
+## Notes: Action bar buttons that fly out your professions, food, drink, potions, elixirs, bandages, scrolls and ways home. Potions work in combat. Time is money, friend.
 ## Author: CoffeeAndLoot
-## Version: 2026.10.12.3
+## Version: 2026.10.12.4
 ## IconTexture: Interface\AddOns\GoblinFlyout\Media\icon
 ## SavedVariables: GoblinFlyoutDB
 

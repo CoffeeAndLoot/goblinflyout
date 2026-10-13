@@ -1,45 +1,94 @@
 # Goblin Flyout
 
-A World of Warcraft addon for **WoW Forever** (interface 16001). Nine buttons for your stock
-Blizzard action bars, each opening a small bar built from Blizzard's own action button:
+*Time is money, friend.*
 
-| Button | Opens | In combat |
+One button on your action bar, a whole bar of choices. Goblin Flyout gives you nine buttons for
+your stock Blizzard action bars. Click one and a small bar flies out above it with everything of
+that kind you have: your professions, your food, your potions, your ways home. Click what you
+want and the bar folds away.
+
+Made for **WoW Forever** (interface 16001).
+
+## Features
+
+- **Nine flyouts:** Professions, Food, Drink, Food & Drink, Potions, Elixirs, Bandages, Scrolls
+  and Travel.
+- **Potions, elixirs, bandages and scrolls work in combat.** Open the bar and drink mid-fight.
+- **Best first.** Consumables are sorted by item level, so your strongest potion leads the bar.
+  Split stacks show as one entry with the total count.
+- **Looks like it belongs.** Every entry is Blizzard's own action button, matched to the size,
+  scale and spacing of the bar it opens from, with stack counts and cooldown sweeps.
+- **Finds everything on its own.** No dragging items in or out: the bars rebuild from your bags,
+  spellbook and professions every time they open.
+- **Horizontal or vertical,** chosen per button.
+- **Your icons.** Right-click a button's icon in the Goblin Flyout window to pick any icon from
+  Blizzard's macro window.
+- **A minimap button** to open the window, which you can hide.
+
+## The buttons
+
+| Button | What its bar holds | In combat |
 |---|---|---|
-| Professions | your crafting professions | no |
-| Food | the food in your bags | no |
-| Drink | the drinks in your bags | no |
-| Food & Drink | your food, then your drinks, on one bar | no |
-| Potions | your potions | yes |
-| Elixirs | your elixirs and flasks | yes |
-| Bandages | your bandages | yes |
-| Scrolls | your scrolls | yes |
-| Travel | your Hearthstone, Teleport: Moonglade, Astral Recall, mage teleports and portals | no |
+| Professions | Every profession with a crafting window, in the order of Blizzard's profession tabs. Mining opens Smelting; Skinning, Herbalism and Fishing open their WoW Forever windows. | No |
+| Food | The food in your bags. | No |
+| Drink | The drinks in your bags. | No |
+| Food & Drink | Food first, then drinks, on one bar. | No |
+| Potions | Your potions. | **Yes** |
+| Elixirs | Your elixirs and flasks. | **Yes** |
+| Bandages | Your bandages. | **Yes** |
+| Scrolls | Your scrolls. | **Yes** |
+| Travel | Your Hearthstone, Teleport: Moonglade, Astral Recall, and a mage's teleports and portals. | No |
 
-Items are listed best first (highest item level), one entry per item with its count. In combat
-a bar shows what you had when the fight began; used-up items grey out until it ends.
+## Getting started
 
-## Install
+1. Click the round **GF** button on the minimap, or type `/gf`.
+2. Drag any icon from the Goblin Flyout window onto an action bar slot.
+3. Click that slot (or press its keybind) to open its bar. Click an entry to use it.
 
-Copy the `GoblinFlyout` folder into `World of Warcraft\_classic_beta_\Interface\AddOns\` and
-restart the game.
+Each button is an ordinary account macro with a short name (Prof, Food, Drink, Meals, Potion,
+Elixir, Aid, Scroll, Travel), so it keeps its keybind, works on every bar page and survives a
+`/reload`. Only the buttons you place are made.
 
-## Use
+## The window
 
-Click the round GF button on the minimap (or type `/gf`) and drag a kind's icon onto an action bar. Each
-kind has its own Horizontal/Vertical button in that window. Right-click a kind's icon to pick
-a different icon in Blizzard's macro window; the button and the window follow it.
+- **Icon:** drag it to an action bar to place the button; right-click it to change its icon.
+- **Horizontal | Vertical:** which way that button's bar opens.
+- **Show minimap button:** untick to hide it. `/gf` still opens the window, and so does
+  Esc > Options > AddOns > Goblin Flyout.
+
+## In combat
+
+The game only lets an addon change what is on a bar out of combat. So in a fight, a bar shows
+what you had when the fight began. A potion you drink to the last greys out at 0 and drops off
+when the fight ends; one you loot mid-fight joins the bar afterwards. Professions, food, drink
+and travel open out of combat only, since you can't use them in a fight anyway.
+
+## Commands
 
 | Command | Does |
 |---|---|
 | `/gf` | Opens the Goblin Flyout window |
-| `/gf <kind>` | Puts that kind's button on your cursor (`/gf potions`) |
-| `/gf layout <kind>` | Flips that kind between Horizontal and Vertical |
-| `/gf minimap` | Hides or shows the minimap button (also a check box in the window) |
-| `/gf probe` | Prints what the addon detects, for bug reports |
+| `/gf <kind>` | Puts that button on your cursor, e.g. `/gf potions` |
+| `/gf layout <kind>` | Flips that button between Horizontal and Vertical |
+| `/gf minimap` | Hides or shows the minimap button |
+| `/gf probe` | Prints what the addon detects; include it in bug reports |
 
-Stock Blizzard bars only; Bartender, Dominos and other bar addons are not supported.
+Kinds: `professions`, `food`, `drink`, `fooddrink`, `potions`, `elixirs`, `bandages`,
+`scrolls`, `travel`.
 
-## Development
+## Good to know
 
-See `CLAUDE.md` for the rules, test and lint commands, and `docs/` for the design spec, plan and
-in-game test checklist.
+- Stock Blizzard action bars only. Bartender, Dominos and other bar addons are not supported.
+- Deleting one of the macros does no harm; drag its icon from the window again and it comes back.
+- Taking a button off your bars leaves its macro in place, since your other characters may still
+  use it.
+
+## Install
+
+Install with the Wago app, or copy the `GoblinFlyout` folder into
+`World of Warcraft\_classic_beta_\Interface\AddOns\` and restart the game.
+
+## For developers
+
+See `CLAUDE.md` for the rules, architecture, tests and lint commands, and `docs/` for the design
+spec and the in-game test checklist.
