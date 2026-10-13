@@ -120,7 +120,8 @@ Out of combat:
 - [x] No bandages: "No bandages in your bags."
 
 In combat (fight a mob):
-- [ ] The Potions button opens the bar in combat; clicking a potion drinks it and closes the bar.
+- [x] The Potions button opens the bar in combat; clicking a potion drinks it and closes the bar.
+      (Owner, 2026-10-12, build 1.60.1.70338.)
 - [ ] The button again closes an open bar in combat.
 - [ ] Opening Elixirs in combat closes Potions.
 - [ ] After drinking the last of a stack in combat, its entry stays, reads 0 and is grey; when the
