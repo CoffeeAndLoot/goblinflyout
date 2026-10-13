@@ -90,7 +90,7 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 
 ## Travel
 
-- [ ] After a **full client restart** (Travel.lua is new), the window has a ninth row, Travel,
+- [x] After a **full client restart** (Travel.lua is new), the window has a ninth row, Travel,
       under Scrolls, with the Hearthstone icon; dragging it places a "Travel" macro.
 - [x] On the druid, Travel opens above its button: Hearthstone first (count 1), then Teleport:
       Moonglade; the button's label reads "Travel", uncut. (Owner's screenshot 2026-10-12.)
