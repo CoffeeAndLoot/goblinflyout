@@ -9,6 +9,8 @@ want and the bar folds away.
 
 Made for **WoW Forever** (interface 16001).
 
+![The Goblin Flyout window: nine flyouts, each with its icon and a Horizontal or Vertical switch](https://raw.githubusercontent.com/CoffeeAndLoot/goblinflyout/master/images/gallery/1-window.png)
+
 ## Features
 
 - **Nine flyouts:** Professions, Food, Drink, Food & Drink, Potions, Elixirs, Bandages, Scrolls
