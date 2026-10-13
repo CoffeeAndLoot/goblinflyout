@@ -92,10 +92,11 @@ Mark each with the build and date when walked; `[-]` is skipped by choice, with 
 
 - [ ] After a **full client restart** (Travel.lua is new), the window has a ninth row, Travel,
       under Scrolls, with the Hearthstone icon; dragging it places a "Travel" macro.
-- [ ] On the druid, Travel opens: Hearthstone first (count 1), then Teleport: Moonglade.
-      Hovering each shows its own tooltip (the Hearthstone says where it is set).
-- [ ] Clicking the Hearthstone starts the hearth cast and closes the bar; afterwards its entry
-      shows the cooldown sweep.
+- [x] On the druid, Travel opens above its button: Hearthstone first (count 1), then Teleport:
+      Moonglade; the button's label reads "Travel", uncut. (Owner's screenshot 2026-10-12.)
+- [ ] Hovering each shows its own tooltip (the Hearthstone says where it is set).
+- [x] After a hearth, the Hearthstone entry shows its cooldown sweep and time left (13m seen).
+- [ ] Clicking the Hearthstone starts the hearth cast and closes the bar.
 - [ ] Clicking Teleport: Moonglade casts it and closes the bar.
 - [ ] Clicking the Travel button in combat: "Can't open travel in combat."
 - [ ] `/gf probe` ends with "Probe: travel -> 6948 Hearthstone, 18960 Teleport: Moonglade".
