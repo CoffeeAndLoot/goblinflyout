@@ -50,6 +50,10 @@ In:
 
 Out (YAGNI):
 - An on/off switch per kind: a kind costs nothing until its button is on a bar.
+- Deleting a macro when its button leaves the bars (owner's ruling 2026-10-12). Account macros
+  are shared by every character but only this character's bars are visible, a button being
+  moved is briefly on no slot, and a deleted macro loses the player's picked icon. Blizzard keeps
+  macros off-bar too. A macro the player deletes by hand is remade on the next drag.
 - Bartender, Dominos, or any bar addon. Libraries (LibDBIcon, LibStub).
 - Changing which entries a bar holds during combat (the client forbids it).
 - Player-editable entries, favourites, hiding single items.
