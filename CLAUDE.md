@@ -31,7 +31,10 @@ Grown from `D:\ProfessionFlyout`, which stays as it is.
   GoblinQuest's, copied. A new or changed TGA needs a full client restart.
 - Adding a file to the TOC needs a full client restart, not `/reload`. Say so.
 - Calendar versions (`2026.10.12`, `.2` for a second that day), written only in the TOC.
-- Commit after each change: `Area: plain sentence`. Push only when the owner asks (no remote yet).
+- Commit after each change: `Area: plain sentence`. Push only when the owner asks (remote: public
+  `CoffeeAndLoot/goblinflyout`). A release is a `v<TOC version>` tag: the release workflow zips the
+  addon and posts it to Wago (project `aND9Xo6o`, the TOC's `X-Wago-ID`) when the repo has the
+  `WAGO_API_TOKEN` secret. CI runs the suite on Lua 5.1 and luacheck on every push.
 
 ## How it fits together
 

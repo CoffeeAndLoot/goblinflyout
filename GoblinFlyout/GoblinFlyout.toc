@@ -5,6 +5,7 @@
 ## Version: 2026.10.12.4
 ## IconTexture: Interface\AddOns\GoblinFlyout\Media\icon
 ## SavedVariables: GoblinFlyoutDB
+## X-Wago-ID: aND9Xo6o
 
 API.lua
 Kinds.lua
