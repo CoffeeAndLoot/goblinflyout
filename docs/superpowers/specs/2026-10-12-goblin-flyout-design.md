@@ -19,7 +19,7 @@ open and work in combat. It looks and feels like stock Blizzard UI.
 - **Bar**: our flyout of entries that opens next to the button.
 - **Entry**: one profession or one item on a bar.
 - **Host**: the stock action button the bar opened from.
-- **Toggle**: the hidden frame a button's macro clicks (`GoblinFlyout<Key>`).
+- **Toggle**: the hidden frame a button's macro clicks (`GoblinFlyout` plus the label's letters and digits: `GoblinFlyoutFoodDrink`).
 - **Plain** / **secure**: the two bar styles (see Bar.lua).
 - **Window**: Goblin Flyout's own options window.
 
@@ -198,7 +198,7 @@ refusal). Matching is by body only.
 
 ### Bar.lua
 
-One bar frame per kind, made on first use (`GoblinFlyout<Key>Bar`); only one bar is open at a
+One bar frame per kind, made on first use (the toggle's name plus `Bar`: `GoblinFlyoutPotionsBar`); only one bar is open at a
 time. Pure parts: `Bar.Positions(n, size, gap, layout)`, `Bar.PickHost(hosts, isUnderMouse)`,
 `Bar.ENTRY_TEMPLATES` (`"ActionButtonTemplate, SecureActionButtonTemplate"`, secure last),
 `Bar.ENTRY_ATTRIBUTES` (`useOnKeyDown = false`; plus `type = "spell"` / `type = "item"`).

@@ -8,7 +8,6 @@ local Options = {}
 ns.Options = Options
 
 Options.NAME = "Goblin Flyout"
-Options.LAYOUTS = { "horizontal", "vertical" }
 Options.LABELS = { horizontal = "Horizontal", vertical = "Vertical" }
 Options.DEFAULT_LAYOUT = "horizontal"
 Options.DEFAULT_ANGLE = 225  -- degrees round the minimap: bottom-left

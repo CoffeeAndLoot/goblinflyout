@@ -31,7 +31,10 @@ end
 
 local function follow()
     local mx, my = Minimap:GetCenter()
-    local cx, cy = GetCursorPosition()
+    local cx, cy = ns.API.CursorPosition()
+    if not (mx and cx) then
+        return
+    end
     local scale = Minimap:GetEffectiveScale()
     button.angle = MinimapButton.Angle(cx / scale - mx, cy / scale - my)
     place(button.angle)

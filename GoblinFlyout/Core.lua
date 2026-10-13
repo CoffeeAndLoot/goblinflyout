@@ -11,7 +11,6 @@ ns.Core = Core
 local function say(text)
     print("|cffffd100Goblin Flyout|r " .. text)
 end
-Core.Say = say
 
 local said = {}
 local function guard(label, fn, ...)
@@ -23,9 +22,14 @@ local function guard(label, fn, ...)
     return ok
 end
 
--- Looked up lazily: SavedVariables load after this file runs.
+-- Looked up lazily: SavedVariables load after this file runs, before any
+-- handler or command can ask. Checked and repaired once, then read as is.
+local checked = false
 local function db()
-    GoblinFlyoutDB = Options.Init(GoblinFlyoutDB)
+    if not checked then
+        GoblinFlyoutDB = Options.Init(GoblinFlyoutDB)
+        checked = true
+    end
     return GoblinFlyoutDB
 end
 

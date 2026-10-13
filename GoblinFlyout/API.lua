@@ -384,6 +384,14 @@ function API.ScreenPixelsPerUnit()
     return height / 768
 end
 
+-- The cursor's x, y in screen units at scale 1, or nil.
+function API.CursorPosition()
+    if not GetCursorPosition then
+        return nil
+    end
+    return attempt("GetCursorPosition", GetCursorPosition)
+end
+
 -- ---- events ----
 
 local eventFrame

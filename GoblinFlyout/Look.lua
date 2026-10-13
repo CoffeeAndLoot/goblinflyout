@@ -22,7 +22,6 @@ Look.COLOUR = {
     ink = hex(0x17, 0x14, 0x0D),       -- words on gold
 }
 Look.WORDS = "Fonts\\FRIZQT__.TTF"
-Look.NUMBERS = "Fonts\\ARIALN.TTF"
 Look.BORDER = 1
 Look.ICONS = "Interface\\AddOns\\GoblinFlyout\\Media\\icons\\"
 Look.COPIES = { 32, 64, 128 }  -- every glyph, in pixels

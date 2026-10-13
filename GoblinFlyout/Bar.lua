@@ -402,6 +402,11 @@ end
 -- bags on its last host, so it opens in combat with what was there at the pull.
 function Bar.EnterCombat(layoutOf)
     Bar.SetEscape(false)
+    -- Defensive: if lockdown has already begun, touching secure frames would be
+    -- blocked; the bars keep what they had.
+    if inCombat() then
+        return
+    end
     for _, bar in ipairs(order) do
         if bar.secure then
             if prepare(bar, layoutOf(bar.kind.key), lastHost(bar)) and bar.frame:IsShown() then
